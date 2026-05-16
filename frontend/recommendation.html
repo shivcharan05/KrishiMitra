@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <title>Crop Recommendations | KrishiMitra AI</title>
+
+  <!-- CSS -->
+
+  <link rel="stylesheet" href="css/global.css">
+  <link rel="stylesheet" href="css/animations.css">
+  <link rel="stylesheet" href="css/responsive.css">
+  <link rel="stylesheet" href="css/dashboard.css">
+
+</head>
+
+<body>
+
+  <!-- SIDEBAR -->
+
+  <div id="sidebar"></div>
+
+  <!-- MAIN -->
+
+  <main class="dashboard-main">
+
+    <!-- HEADER -->
+
+    <header class="dashboard-topbar glass-card">
+
+      <div>
+
+        <h2>
+          AI Crop Recommendations 🌱
+        </h2>
+
+        <p class="text-soft">
+
+          Personalized crop suggestions powered by
+          AI-driven agricultural intelligence.
+
+        </p>
+
+      </div>
+
+    </header>
+
+    <!-- FILTERS -->
+
+    <section class="glass-card recommendation-filters">
+
+      <div class="filter-group">
+
+        <label>Season</label>
+
+        <select class="form-input">
+
+          <option>Kharif</option>
+          <option>Rabi</option>
+          <option>Zaid</option>
+
+        </select>
+
+      </div>
+
+      <div class="filter-group">
+
+        <label>Soil Type</label>
+
+        <select class="form-input">
+
+          <option>Black Soil</option>
+          <option>Clay Soil</option>
+          <option>Loamy Soil</option>
+
+        </select>
+
+      </div>
+
+      <div class="filter-group">
+
+        <label>Water Availability</label>
+
+        <select class="form-input">
+
+          <option>High</option>
+          <option>Medium</option>
+          <option>Low</option>
+
+        </select>
+
+      </div>
+
+      <button class="btn-primary">
+        Generate Recommendations
+      </button>
+
+    </section>
+
+    <!-- AI SUMMARY -->
+
+    <section class="glass-card ai-summary-card ai-glow">
+
+      <div class="summary-left">
+
+        <span class="summary-badge">
+          AI ANALYSIS COMPLETE
+        </span>
+
+        <h2>
+          Soybean Is Your Best Recommended Crop
+        </h2>
+
+        <p>
+
+          Based on weather, soil health, rainfall,
+          and market trends, soybean provides the
+          highest profitability and lowest risk
+          for your region this season.
+
+        </p>
+
+      </div>
+
+      <div class="summary-right">
+
+        <div class="summary-score">
+
+          <h1 class="ai-number">94%</h1>
+
+          <p>AI Confidence</p>
+
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- RECOMMENDATION CARDS -->
+
+    <section class="recommendation-grid">
+
+      <!-- CARD 1 -->
+
+      <div class="glass-card crop-recommendation-card">
+
+        <div class="crop-top">
+
+          <div>
+
+            <h3>Soybean</h3>
+            <p class="text-soft">
+              Highly Recommended
+            </p>
+
+          </div>
+
+          <span class="recommendation-score">
+            94%
+          </span>
+
+        </div>
+
+        <div class="crop-metrics">
+
+          <div class="metric">
+
+            <span>🌦️ Weather Match</span>
+            <strong>Excellent</strong>
+
+          </div>
+
+          <div class="metric">
+
+            <span>💰 Profitability</span>
+            <strong>High</strong>
+
+          </div>
+
+          <div class="metric">
+
+            <span>⚠️ Risk Level</span>
+            <strong>Low</strong>
+
+          </div>
+
+        </div>
+
+        <div class="crop-tags">
+
+          <span>High Demand</span>
+          <span>Low Water Need</span>
+          <span>Gov Support</span>
+
+        </div>
+
+        <button class="btn-primary full-width-btn">
+
+          View Detailed Insights
+
+        </button>
+
+      </div>
+
+      <!-- CARD 2 -->
+
+      <div class="glass-card crop-recommendation-card">
+
+        <div class="crop-top">
+
+          <div>
+
+            <h3>Sugarcane</h3>
+            <p class="text-soft">
+              Moderate Recommendation
+            </p>
+
+          </div>
+
+          <span class="recommendation-score">
+            82%
+          </span>
+
+        </div>
+
+        <div class="crop-metrics">
+
+          <div class="metric">
+
+            <span>🌦️ Weather Match</span>
+            <strong>Good</strong>
+
+          </div>
+
+          <div class="metric">
+
+            <span>💰 Profitability</span>
+            <strong>Medium</strong>
+
+          </div>
+
+          <div class="metric">
+
+            <span>⚠️ Risk Level</span>
+            <strong>Medium</strong>
+
+          </div>
+
+        </div>
+
+        <div class="crop-tags">
+
+          <span>Water Intensive</span>
+          <span>Stable Market</span>
+
+        </div>
+
+        <button class="btn-primary full-width-btn">
+
+          View Detailed Insights
+
+        </button>
+
+      </div>
+
+      <!-- CARD 3 -->
+
+      <div class="glass-card crop-recommendation-card">
+
+        <div class="crop-top">
+
+          <div>
+
+            <h3>Wheat</h3>
+            <p class="text-soft">
+              Safe Recommendation
+            </p>
+
+          </div>
+
+          <span class="recommendation-score">
+            79%
+          </span>
+
+        </div>
+
+        <div class="crop-metrics">
+
+          <div class="metric">
+
+            <span>🌦️ Weather Match</span>
+            <strong>Good</strong>
+
+          </div>
+
+          <div class="metric">
+
+            <span>💰 Profitability</span>
+            <strong>Stable</strong>
+
+          </div>
+
+          <div class="metric">
+
+            <span>⚠️ Risk Level</span>
+            <strong>Low</strong>
+
+          </div>
+
+        </div>
+
+        <div class="crop-tags">
+
+          <span>Low Risk</span>
+          <span>Government Backed</span>
+
+        </div>
+
+        <button class="btn-primary full-width-btn">
+
+          View Detailed Insights
+
+        </button>
+
+      </div>
+
+    </section>
+
+    <!-- AI INSIGHTS -->
+
+    <section class="dashboard-grid recommendation-bottom-grid">
+
+      <!-- LEFT -->
+
+      <div class="glass-card dashboard-widget">
+
+        <div class="widget-header">
+
+          <h3>AI Recommendation Insights</h3>
+
+          <span>Generated By AI Agents</span>
+
+        </div>
+
+        <div class="insight-list">
+
+          <div class="insight-item">
+
+            <span>🌧️</span>
+
+            <p>
+
+              Expected rainfall patterns strongly support
+              soybean cultivation this season.
+
+            </p>
+
+          </div>
+
+          <div class="insight-item">
+
+            <span>📈</span>
+
+            <p>
+
+              Soybean market demand is projected to
+              increase by 18% in nearby regions.
+
+            </p>
+
+          </div>
+
+          <div class="insight-item">
+
+            <span>🧪</span>
+
+            <p>
+
+              Soil nitrogen levels are optimal for
+              legume-based crops.
+
+            </p>
+
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- RIGHT -->
+
+      <div class="glass-card dashboard-widget">
+
+        <div class="widget-header">
+
+          <h3>Government Support</h3>
+
+          <span>Eligible Schemes</span>
+
+        </div>
+
+        <div class="scheme-list">
+
+          <div class="scheme-item">
+
+            <h4>PM-KISAN Support</h4>
+
+            <p>
+              Financial support available for soybean farmers.
+            </p>
+
+          </div>
+
+          <div class="scheme-item">
+
+            <h4>Crop Insurance Scheme</h4>
+
+            <p>
+              Weather protection coverage available.
+            </p>
+
+          </div>
+
+          <div class="scheme-item">
+
+            <h4>Seed Subsidy Program</h4>
+
+            <p>
+              Subsidized certified seed assistance.
+            </p>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+  </main>
+
+  <!-- JS -->
+
+  <script src="js/config.js"></script>
+  <script src="js/utils.js"></script>
+  <script src="js/recommendation.js"></script>
+  <script src="js/app.js"></script>
+
+  <!-- SIDEBAR LOADER -->
+
+  <script>
+
+    async function loadComponent(id, file) {
+
+      const response = await fetch(file);
+
+      const data = await response.text();
+
+      document.getElementById(id).innerHTML = data;
+    }
+
+    loadComponent("sidebar", "components/sidebar.html");
+
+  </script>
+
+</body>
+
+</html>
