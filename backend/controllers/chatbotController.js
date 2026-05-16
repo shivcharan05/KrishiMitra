@@ -1,5 +1,5 @@
 const {
-  generateChatResponse,
+  getFarmResponse,
 } = require("../services/geminiService");
 
 const chatWithAI = async (req, res) => {
@@ -17,8 +17,7 @@ const chatWithAI = async (req, res) => {
 
     // Generate AI response
 
-    const aiResponse =
-      await generateChatResponse(message);
+    const aiResponse = await getFarmResponse(message);
 
     // Send response
 

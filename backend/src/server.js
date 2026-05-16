@@ -12,42 +12,24 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-const weatherRoutes = require(
-  "./routes/weatherRoutes"
-);
-
+const weatherRoutes = require("./routes/weatherRoutes");
+const chatbotRoutes = require("./routes/chatbotRoutes");
 const soilRoutes = require("./routes/soilRoutes");
-app.use("/api/soil", soilRoutes);
-
 const userRoutes = require("./routes/userRoutes");
-app.use("/api/users", userRoutes);
-
-app.get("/", (req, res) => {
-  res.send("KrishiMitra  API Running");
-});
-
 const testRoutes = require("./routes/testRoutes");
 
+app.use("/api/weather", weatherRoutes);
+app.use("/api/chatbot", chatbotRoutes);
+app.use("/api/soil", soilRoutes);
+app.use("/api/users", userRoutes);
+app.use("/api/test", testRoutes);
+
+app.get("/", (req, res) => {
+  res.send("KrishiMitra API Running");
+});
 
 const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
-
-const chatbotRoutes = require(
-  "./routes/chatbotRoutes"
-);
-
-
-app.use(
-  "/api/weather",
-  weatherRoutes
-);
-
-app.use("/api/test", testRoutes);
-
-app.use(
-  "/api/chatbot",
-  chatbotRoutes
-);
