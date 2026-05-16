@@ -310,66 +310,63 @@
 
   </script>
 
-  <<<<<<< HEAD <!-- CHATBOT -->
-    =======
-    <<<<<<< HEAD=======<!-- CHATBOT -->
-      >>>>>>> 95d388750f7b97b73b62f4556922f29c267b2704
 
-      <div id="chatbotComponent"></div>
 
-      <script>
+  <div id="chatbotComponent"></div>
 
-        async function loadComponent(id, file) {
+  <script>
 
-          const response = await fetch(file);
+    async function loadComponent(id, file) {
 
-          const data = await response.text();
+      const response = await fetch(file);
 
-          document.getElementById(id).innerHTML = data;
+      const data = await response.text();
+
+      document.getElementById(id).innerHTML = data;
+    }
+
+    async function initializePage() {
+
+      /* LOAD SIDEBAR */
+
+      await loadComponent(
+        "sidebar",
+        "components/sidebar.html"
+      );
+
+      /* LOAD CHATBOT */
+
+      await loadComponent(
+        "chatbotComponent",
+        "components/chatbotWidget.html"
+      );
+
+      /* LOAD CHATBOT JS AFTER COMPONENT EXISTS */
+
+      const chatbotScript =
+        document.createElement("script");
+
+      chatbotScript.src =
+        "js/chatbot.js";
+
+      chatbotScript.onload = () => {
+
+        if (
+          typeof initializeChatbot === "function"
+        ) {
+
+          initializeChatbot();
         }
+      };
 
-        async function initializePage() {
+      document.body.appendChild(chatbotScript);
+    }
 
-          /* LOAD SIDEBAR */
+    initializePage();
 
-          await loadComponent(
-            "sidebar",
-            "components/sidebar.html"
-          );
+  </script>
 
-          /* LOAD CHATBOT */
 
-          await loadComponent(
-            "chatbotComponent",
-            "components/chatbotWidget.html"
-          );
-
-          /* LOAD CHATBOT JS AFTER COMPONENT EXISTS */
-
-          const chatbotScript =
-            document.createElement("script");
-
-          chatbotScript.src =
-            "js/chatbot.js";
-
-          chatbotScript.onload = () => {
-
-            if (
-              typeof initializeChatbot === "function"
-            ) {
-
-              initializeChatbot();
-            }
-          };
-
-          document.body.appendChild(chatbotScript);
-        }
-
-        initializePage();
-
-      </script>
-
-      >>>>>>> df71daecedb3a56511e0f9d01d84fa2d1f299227
 </body>
 
 </html>

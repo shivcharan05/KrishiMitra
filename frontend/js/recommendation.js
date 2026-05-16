@@ -75,3 +75,109 @@ allowLocationBtn.addEventListener("click", async () => {
     { timeout: 10000, enableHighAccuracy: true }
   );
 });
+
+/* =========================================
+   FARM & SOIL PROFILE LOGIC
+========================================= */
+
+document.addEventListener("DOMContentLoaded", () => {
+  
+  /* ---- Soil Data Toggle Logic ---- */
+  const radioBtns = document.querySelectorAll('input[name="hasSoilData"]');
+  const manualInputs = document.getElementById("soilManualInputs");
+  const autoBadge = document.getElementById("soilAutoBadge");
+
+  radioBtns.forEach((radio) => {
+    radio.addEventListener("change", (e) => {
+      if (e.target.value === "yes") {
+        /* Show manual inputs, hide auto badge */
+        manualInputs.classList.remove("hidden-smooth");
+        manualInputs.classList.add("visible-smooth");
+        autoBadge.style.display = "none";
+      } else {
+        /* Hide manual inputs, show auto badge */
+        manualInputs.classList.add("hidden-smooth");
+        manualInputs.classList.remove("visible-smooth");
+        autoBadge.style.display = "flex";
+      }
+    });
+  });
+
+  /* ---- Generate AI Recommendation Button ---- */
+  const generateBtn = document.getElementById("generateBtn");
+  
+  if (generateBtn) {
+    generateBtn.addEventListener("click", () => {
+      
+      /* Validate Location is fetched */
+      if (!window.recommendationData.location.latitude) {
+        alert("Please 'Allow Location' before generating a recommendation.");
+        return;
+      }
+
+      /* Collect Base Form Values */
+      const landSize = document.getElementById("landSize").value;
+      const soilType = document.getElementById("soilType").value;
+      const waterAvail = document.getElementById("waterAvail").value;
+      const budgetLevel = document.getElementById("budgetLevel").value;
+
+      /* Validate Base Form */
+      if (!landSize || !soilType || !waterAvail || !budgetLevel) {
+        alert("Please fill out all the basic Farm Details (Land Size, Soil Type, Water, and Budget).");
+        return;
+      }
+
+      /* Collect Soil Data Preference */
+      const hasSoilData = document.querySelector('input[name="hasSoilData"]:checked').value === "yes";
+      
+      let manualSoilData = null;
+      
+      if (hasSoilData) {
+        const ph = document.getElementById("soilPh").value;
+        const n = document.getElementById("soilN").value;
+        const p = document.getElementById("soilP").value;
+        const k = document.getElementById("soilK").value;
+        
+        if (!ph || !n || !p || !k) {
+          alert("Please fill out all soil values (pH, N, P, K) or switch to AI auto-fetch.");
+          return;
+        }
+
+        manualSoilData = {
+          pH: parseFloat(ph),
+          Nitrogen: parseFloat(n),
+          Phosphorous: parseFloat(p),
+          Potassium: parseFloat(k)
+        };
+      }
+
+      /* Store exactly what we captured */
+      window.recommendationData.farmProfile = {
+        landSizeAcres: parseFloat(landSize),
+        soilType: soilType,
+        waterAvailability: waterAvail,
+        budgetLevel: budgetLevel,
+        hasExactSoilData: hasSoilData,
+        manualSoilData: manualSoilData 
+      };
+
+      /* Log the final, beautiful payload for our AI */
+      console.log("🚀 Farm AI Payload Ready:");
+      console.log(JSON.stringify(window.recommendationData, null, 2));
+
+      /* Update UI to show processing state */
+      generateBtn.innerHTML = "🤖 Analyzing Farm Profile...";
+      generateBtn.disabled = true;
+      generateBtn.style.opacity = "0.8";
+
+      /* MOCK: Simulate API processing wait, then alert user */
+      setTimeout(() => {
+        alert("AI Processing Complete! (Check console for the full JSON payload). Integration with AI backend coming next!");
+        generateBtn.innerHTML = "Generate AI Recommendation";
+        generateBtn.disabled = false;
+        generateBtn.style.opacity = "1";
+      }, 1500);
+
+    });
+  }
+});

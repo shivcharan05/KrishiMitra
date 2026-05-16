@@ -91,11 +91,114 @@
         <div id="weatherSection"></div>
       </div>
 
-      <!-- SOIL -->
-      <div id="soilSection"></div>
+      <!-- FARM & SOIL DETAILS -->
+      <div id="farmProfileWrapper">
+        <div class="section-label">
+          <span class="section-label-icon">🌱</span>
+          <span>Farm & Soil Profile</span>
+        </div>
+        
+        <div class="farm-form-card glass-card">
+          <div class="form-grid">
+            
+            <!-- Land Size -->
+            <div class="form-group">
+              <label for="landSize">Land Size (Acres)</label>
+              <input type="number" id="landSize" placeholder="e.g. 2.5" min="0.1" step="0.1" required>
+            </div>
 
-      <!-- FARM DETAILS -->
-      <div id="farmSection"></div>
+            <!-- Soil Type -->
+            <div class="form-group">
+              <label for="soilType">Soil Type</label>
+              <div class="custom-select-wrapper">
+                <select id="soilType" required>
+                  <option value="" disabled selected>Select Soil Type</option>
+                  <option value="Black">Black Soil</option>
+                  <option value="White">White / Sandy Soil</option>
+                  <option value="Red">Red Soil</option>
+                  <option value="Alluvial">Alluvial Soil</option>
+                  <option value="Laterite">Laterite Soil</option>
+                  <option value="Other">Other</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Water Availability -->
+            <div class="form-group">
+              <label for="waterAvail">Water Availability</label>
+              <div class="custom-select-wrapper">
+                <select id="waterAvail" required>
+                  <option value="" disabled selected>Select Level</option>
+                  <option value="High">High (Abundant)</option>
+                  <option value="Medium">Medium (Seasonal)</option>
+                  <option value="Low">Low (Scarce)</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Budget Level -->
+            <div class="form-group">
+              <label for="budgetLevel">Budget Level</label>
+              <div class="custom-select-wrapper">
+                <select id="budgetLevel" required>
+                  <option value="" disabled selected>Select Budget</option>
+                  <option value="High">High (Commercial)</option>
+                  <option value="Medium">Medium</option>
+                  <option value="Low">Low (Subsistence)</option>
+                </select>
+              </div>
+            </div>
+
+          </div> <!-- /form-grid -->
+
+          <!-- Soil Data Section -->
+          <div class="soil-data-section">
+            <label class="toggle-label">Do you have exact soil lab data? (pH, N, P, K)</label>
+            <div class="radio-group">
+              <label class="radio-btn">
+                <input type="radio" name="hasSoilData" value="yes">
+                <span>Yes, I have data</span>
+              </label>
+              <label class="radio-btn">
+                <input type="radio" name="hasSoilData" value="no" checked>
+                <span>No, use AI estimates</span>
+              </label>
+            </div>
+
+            <!-- Auto-Fetch Badge (Default state) -->
+            <div id="soilAutoBadge" class="soil-badge">
+              <span class="badge-icon">🤖</span>
+              <div>
+                <strong>AI Soil Intelligence</strong>
+                <p>We will fetch estimated soil health data based on your geographic location.</p>
+              </div>
+            </div>
+
+            <!-- Manual NPK Inputs (Hidden by default) -->
+            <div id="soilManualInputs" class="soil-manual-inputs hidden-smooth">
+              <div class="form-grid npk-grid">
+                <div class="form-group">
+                  <label for="soilPh">pH Level</label>
+                  <input type="number" id="soilPh" placeholder="e.g. 6.5" step="0.1">
+                </div>
+                <div class="form-group">
+                  <label for="soilN">Nitrogen (N)</label>
+                  <input type="number" id="soilN" placeholder="mg/kg">
+                </div>
+                <div class="form-group">
+                  <label for="soilP">Phosphorous (P)</label>
+                  <input type="number" id="soilP" placeholder="mg/kg">
+                </div>
+                <div class="form-group">
+                  <label for="soilK">Potassium (K)</label>
+                  <input type="number" id="soilK" placeholder="mg/kg">
+                </div>
+              </div>
+            </div>
+          </div> <!-- /soil-data-section -->
+
+        </div>
+      </div>
 
       <!-- SUBMIT -->
       <button id="generateBtn">
