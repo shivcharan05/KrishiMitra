@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <title>Farmer Profile | KrishiMitra AI</title>
+
+  <link rel="stylesheet" href="css/global.css">
+  <link rel="stylesheet" href="css/dashboard.css">
+  <link rel="stylesheet" href="css/animations.css">
+  <link rel="stylesheet" href="css/responsive.css">
+
+</head>
+
+<body>
+
+  <!-- SIDEBAR -->
+
+  <div id="sidebar"></div>
+
+  <!-- MAIN -->
+
+  <main class="dashboard-main">
+
+    <!-- PROFILE HEADER -->
+
+    <section class="glass-card profile-header">
+
+      <div class="profile-left">
+
+        <img
+          src="assets/images/farmer-avatar.png"
+          alt="Farmer"
+          class="profile-avatar"
+        >
+
+        <div>
+
+          <h2>Ramesh Patil</h2>
+
+          <p class="text-soft">
+
+            Progressive Farmer • Maharashtra
+
+          </p>
+
+        </div>
+
+      </div>
+
+      <button class="btn-primary">
+
+        Edit Profile
+
+      </button>
+
+    </section>
+
+    <!-- PROFILE GRID -->
+
+    <section class="dashboard-grid">
+
+      <!-- FARM DETAILS -->
+
+      <div class="glass-card dashboard-widget">
+
+        <div class="widget-header">
+
+          <h3>Farm Details</h3>
+
+          <span>Overview</span>
+
+        </div>
+
+        <div class="profile-info">
+
+          <div class="info-row">
+
+            <span>Total Land</span>
+            <strong>12 Acres</strong>
+
+          </div>
+
+          <div class="info-row">
+
+            <span>Main Crop</span>
+            <strong>Soybean</strong>
+
+          </div>
+
+          <div class="info-row">
+
+            <span>Irrigation Type</span>
+            <strong>Drip Irrigation</strong>
+
+          </div>
+
+          <div class="info-row">
+
+            <span>Experience</span>
+            <strong>15 Years</strong>
+
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- AI PERFORMANCE -->
+
+      <div class="glass-card dashboard-widget ai-glow">
+
+        <div class="widget-header">
+
+          <h3>AI Performance Insights</h3>
+
+          <span>Analytics</span>
+
+        </div>
+
+        <div class="analytics-grid">
+
+          <div class="analytics-card">
+
+            <p>Yield Score</p>
+            <h2>88%</h2>
+
+          </div>
+
+          <div class="analytics-card">
+
+            <p>Risk Score</p>
+            <h2>Low</h2>
+
+          </div>
+
+          <div class="analytics-card">
+
+            <p>AI Accuracy</p>
+            <h2>95%</h2>
+
+          </div>
+
+          <div class="analytics-card">
+
+            <p>Growth Rate</p>
+            <h2>+14%</h2>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- RECENT ACTIVITY -->
+
+    <section class="glass-card dashboard-widget">
+
+      <div class="widget-header">
+
+        <h3>Recent Activity</h3>
+
+        <span>Live Updates</span>
+
+      </div>
+
+      <div class="timeline">
+
+        <div class="timeline-item active">
+
+          <div class="timeline-dot"></div>
+
+          <div>
+
+            <h4>Today</h4>
+
+            <p>
+
+              AI generated new crop recommendation.
+
+            </p>
+
+          </div>
+
+        </div>
+
+        <div class="timeline-item warning">
+
+          <div class="timeline-dot"></div>
+
+          <div>
+
+            <h4>Yesterday</h4>
+
+            <p>
+
+              Disease detection alert resolved.
+
+            </p>
+
+          </div>
+
+        </div>
+
+        <div class="timeline-item active">
+
+          <div class="timeline-dot"></div>
+
+          <div>
+
+            <h4>2 Days Ago</h4>
+
+            <p>
+
+              Government scheme eligibility updated.
+
+            </p>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+  </main>
+
+  <!-- CHATBOT -->
+
+  <div id="chatbotComponent"></div>
+
+  <!-- JS -->
+
+  <script src="js/app.js"></script>
+  <script src="js/profile.js"></script>
+  <!-- COMPONENT LOADER -->
+
+  <script>
+
+    async function loadComponent(id, file) {
+
+      const response = await fetch(file);
+
+      const data = await response.text();
+
+      document.getElementById(id).innerHTML = data;
+    }
+
+    async function initializePage() {
+
+      await loadComponent(
+        "sidebar",
+        "components/sidebar.html"
+      );
+
+      await loadComponent(
+        "chatbotComponent",
+        "components/chatbotWidget.html"
+      );
+
+      const chatbotScript =
+        document.createElement("script");
+
+      chatbotScript.src = "js/chatbot.js";
+
+      document.body.appendChild(chatbotScript);
+    }
+
+    initializePage();
+
+  </script>
+
+</body>
+
+</html>
