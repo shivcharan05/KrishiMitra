@@ -7,11 +7,18 @@ const connectDB = require("./config/db");
 dotenv.config();
 
 connectDB();
-
 const app = express();
 
 app.use(cors());
 app.use(express.json());
+
+const weatherRoutes = require(
+  "./routes/weatherRoutes"
+);
+app.use(
+  "/api/weather",
+  weatherRoutes
+);
 
 app.get("/", (req, res) => {
   res.send("KrishiMitra  API Running");
@@ -26,3 +33,4 @@ const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
+
