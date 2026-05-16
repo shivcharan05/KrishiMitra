@@ -95,43 +95,52 @@ function initializeChatbot() {
       "hidden"
     );
 
-    setTimeout(() => {
+    // Make real request to backend Gemini AI
+    fetch("http://localhost:5000/api/chatbot/chat", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ message: message })
+    })
+    .then(response => response.json())
+    .then(data => {
+      typingIndicator.classList.add("hidden");
 
-      typingIndicator.classList.add(
-        "hidden"
-      );
+      const aiMessage = document.createElement("div");
+      aiMessage.className = "chat-message ai-message";
 
-      const aiMessage =
-        document.createElement("div");
-
-      aiMessage.className =
-        "chat-message ai-message";
+      let replyText = "Sorry, I could not generate a response.";
+      if (data.success && data.reply) {
+        // Simple formatting to make Gemini output readable (convert newlines to <br>)
+        replyText = data.reply.replace(/\n/g, "<br>");
+      } else if (data.message) {
+        replyText = "Error: " + data.message;
+      }
 
       aiMessage.innerHTML = `
         <div class="message-avatar">
           🤖
         </div>
-
         <div class="message-content">
-
-          <p>
-
-            I understand your farming query regarding:
-            "<strong>${message}</strong>"
-
-          </p>
-
+          <p>${replyText}</p>
         </div>
       `;
 
-      chatbotBody.appendChild(
-        aiMessage
-      );
-
-      chatbotBody.scrollTop =
-        chatbotBody.scrollHeight;
-
-    }, 1200);
+      chatbotBody.appendChild(aiMessage);
+      chatbotBody.scrollTop = chatbotBody.scrollHeight;
+    })
+    .catch(error => {
+      console.error("Chatbot Fetch Error:", error);
+      typingIndicator.classList.add("hidden");
+      
+      const errorMessage = document.createElement("div");
+      errorMessage.className = "chat-message ai-message";
+      errorMessage.innerHTML = `
+        <div class="message-avatar">🤖</div>
+        <div class="message-content"><p>Sorry, my servers are currently unreachable.</p></div>
+      `;
+      chatbotBody.appendChild(errorMessage);
+      chatbotBody.scrollTop = chatbotBody.scrollHeight;
+    });
   }
 
   /* SEND BUTTON */
