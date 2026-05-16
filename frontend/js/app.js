@@ -1,61 +1,113 @@
 /* =========================================
-   KRISHIMITRA AI — APP INIT
+   KRISHIMITRA AI — GLOBAL APP
 ========================================= */
 
 document.addEventListener("DOMContentLoaded", () => {
 
-  const currentLang = getCurrentLanguage();
+  /* ======================================
+     SCROLL REVEAL
+  ====================================== */
 
-  applyTranslations(currentLang);
+  const revealElements =
+    document.querySelectorAll(".reveal");
 
-  const languageSwitcher = document.getElementById("languageSwitcher");
+  function revealOnScroll() {
 
-  if (languageSwitcher) {
+    const triggerBottom =
+      window.innerHeight * 0.9;
 
-    languageSwitcher.value = currentLang;
+    revealElements.forEach(element => {
 
-    languageSwitcher.addEventListener("change", (e) => {
-      setLanguage(e.target.value);
+      const rect =
+        element.getBoundingClientRect();
+
+      if (rect.top < triggerBottom) {
+
+        element.classList.add("active");
+      }
     });
   }
-});
 
-/* =========================================
-   HERO COUNTER ANIMATION
-========================================= */
+  window.addEventListener(
+    "scroll",
+    revealOnScroll
+  );
 
-function animateValue(element, start, end, duration) {
+  revealOnScroll();
 
-  let startTimestamp = null;
+  /* ======================================
+     COUNTER ANIMATION
+  ====================================== */
 
-  const step = (timestamp) => {
+  const counters =
+    document.querySelectorAll(".ai-number");
 
-    if (!startTimestamp) {
-      startTimestamp = timestamp;
+  counters.forEach(counter => {
+
+    const target =
+      +counter.innerText.replace("%", "");
+
+    let current = 0;
+
+    const increment = target / 60;
+
+    function updateCounter() {
+
+      current += increment;
+
+      if (current < target) {
+
+        counter.innerText =
+          `${Math.floor(current)}%`;
+
+        requestAnimationFrame(updateCounter);
+
+      } else {
+
+        counter.innerText =
+          `${target}%`;
+      }
     }
 
-    const progress = Math.min(
-      (timestamp - startTimestamp) / duration,
-      1
-    );
+    updateCounter();
+  });
 
-    element.innerHTML = Math.floor(
-      progress * (end - start) + start
-    ) + "%";
+  /* ======================================
+     ACTIVE SIDEBAR LINK
+  ====================================== */
 
-    if (progress < 1) {
-      window.requestAnimationFrame(step);
+  const currentPage =
+    window.location.pathname
+      .split("/")
+      .pop();
+
+  const sidebarLinks =
+    document.querySelectorAll(".sidebar-link");
+
+  sidebarLinks.forEach(link => {
+
+    const href = link.getAttribute("href");
+
+    if (href === currentPage) {
+
+      link.classList.add("active-link");
     }
-  };
+  });
 
-  window.requestAnimationFrame(step);
-}
+  /* ======================================
+     LOADING SIMULATION
+  ====================================== */
 
-window.addEventListener("load", () => {
+  const skeletons =
+    document.querySelectorAll(".skeleton");
 
-  const statNumber = document.querySelector(".stat-card h2");
+  setTimeout(() => {
 
-  if (statNumber) {
-    animateValue(statNumber, 0, 92, 1500);
-  }
+    skeletons.forEach(item => {
+
+      item.classList.remove("skeleton");
+    });
+
+  }, 1500);
+
 });
