@@ -4,12 +4,13 @@ const userSchema = new mongoose.Schema(
   {
     firebaseUID: {
       type: String,
-      required: true,
       unique: true,
+      sparse: true, // Allows nulls to not clash on unique index
     },
 
     name: {
       type: String,
+      default: "Anonymous Farmer",
     },
 
     email: {
@@ -25,6 +26,13 @@ const userSchema = new mongoose.Schema(
     location: {
       type: String,
       default: "Unknown",
+    },
+
+    farmDetails: {
+      totalLand: { type: String, default: "0 Acres" },
+      mainCrop: { type: String, default: "None" },
+      irrigationType: { type: String, default: "None" },
+      experience: { type: String, default: "0 Years" }
     },
   },
   {

@@ -95,47 +95,50 @@ function initializeChatbot() {
       "hidden"
     );
 
-    fetch("http://localhost:5002/chat", {
+    // Make real request to backend Gemini AI
+    fetch("http://localhost:5000/api/chatbot/chat", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ message: message })
     })
-    .then(res => res.json())
+    .then(response => response.json())
     .then(data => {
       typingIndicator.classList.add("hidden");
 
       const aiMessage = document.createElement("div");
       aiMessage.className = "chat-message ai-message";
-      
-      // Formatting basic markdown (bold/italic) to HTML for nice display
-      let formattedReply = data.reply
-        .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-        .replace(/\*(.*?)\*/g, '<em>$1</em>')
-        .replace(/\n/g, '<br>');
+
+      let replyText = "Sorry, I could not generate a response.";
+      if (data.success && data.reply) {
+        // Simple formatting to make Gemini output readable (convert newlines to <br>)
+        replyText = data.reply.replace(/\n/g, "<br>");
+      } else if (data.message) {
+        replyText = "Error: " + data.message;
+      }
 
       aiMessage.innerHTML = `
-        <div class="message-avatar">🤖</div>
+        <div class="message-avatar">
+          🤖
+        </div>
         <div class="message-content">
-          <p>${formattedReply}</p>
+          <p>${replyText}</p>
         </div>
       `;
 
       chatbotBody.appendChild(aiMessage);
       chatbotBody.scrollTop = chatbotBody.scrollHeight;
     })
-    .catch(err => {
-      console.error(err);
+    .catch(error => {
+      console.error("Chatbot Fetch Error:", error);
       typingIndicator.classList.add("hidden");
       
-      const errorMsg = document.createElement("div");
-      errorMsg.className = "chat-message ai-message";
-      errorMsg.innerHTML = `
+      const errorMessage = document.createElement("div");
+      errorMessage.className = "chat-message ai-message";
+      errorMessage.innerHTML = `
         <div class="message-avatar">🤖</div>
-        <div class="message-content">
-          <p>Sorry, I'm having trouble connecting to my brain right now.</p>
-        </div>
+        <div class="message-content"><p>Sorry, my servers are currently unreachable.</p></div>
       `;
-      chatbotBody.appendChild(errorMsg);
+      chatbotBody.appendChild(errorMessage);
       chatbotBody.scrollTop = chatbotBody.scrollHeight;
     });
   }
