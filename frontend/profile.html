@@ -235,50 +235,57 @@
 
   </main>
 
-  <!-- CHATBOT -->
-
-  <div id="chatbotComponent"></div>
-
+  
   <!-- JS -->
-
+  
   <script src="js/app.js"></script>
   <script src="js/profile.js"></script>
   <!-- COMPONENT LOADER -->
+  
+  <!-- CHATBOT -->
 
-  <script>
+<div id="chatbotComponent"></div>
 
-    async function loadComponent(id, file) {
+<script src="js/chatbot.js"></script>
 
-      const response = await fetch(file);
+<script>
 
-      const data = await response.text();
+  async function loadComponent(id, file) {
 
-      document.getElementById(id).innerHTML = data;
-    }
+    const response =
+      await fetch(file);
 
-    async function initializePage() {
+    const data =
+      await response.text();
 
-      await loadComponent(
-        "sidebar",
-        "components/sidebar.html"
-      );
+    document.getElementById(id)
+      .innerHTML = data;
+  }
 
-      await loadComponent(
-        "chatbotComponent",
-        "components/chatbotWidget.html"
-      );
+  async function initializePage() {
 
-      const chatbotScript =
-        document.createElement("script");
+    /* LOAD SIDEBAR */
 
-      chatbotScript.src = "js/chatbot.js";
+    await loadComponent(
+      "sidebar",
+      "components/sidebar.html"
+    );
 
-      document.body.appendChild(chatbotScript);
-    }
+    /* LOAD CHATBOT */
 
-    initializePage();
+    await loadComponent(
+      "chatbotComponent",
+      "components/chatbotWidget.html"
+    );
 
-  </script>
+    /* INITIALIZE CHATBOT */
+
+    initializeChatbot();
+  }
+
+  initializePage();
+
+</script>
 
 </body>
 
