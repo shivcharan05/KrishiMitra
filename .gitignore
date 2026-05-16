@@ -1,7 +1,5 @@
 node_modules
 .env
-uploads
-dist
-build
+backend/.env
 firebase-service-account.json
-
+backend/firebase-service-account.json
