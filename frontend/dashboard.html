@@ -288,7 +288,11 @@
 
   </main>
 
-  
+  <!-- FLOATING BUTTON -->
+
+  <button class="floating-ai-btn pulse-glow">
+    🤖
+  </button>
 
   <!-- JS -->
 
@@ -314,62 +318,6 @@
     loadComponent("sidebar", "components/sidebar.html");
 
   </script>
-
-<!-- CHATBOT -->
-
-<div id="chatbotComponent"></div>
-
-<script>
-
-  async function loadComponent(id, file) {
-
-    const response = await fetch(file);
-
-    const data = await response.text();
-
-    document.getElementById(id).innerHTML = data;
-  }
-
-  async function initializePage() {
-
-    /* LOAD SIDEBAR */
-
-    await loadComponent(
-      "sidebar",
-      "components/sidebar.html"
-    );
-
-    /* LOAD CHATBOT */
-
-    await loadComponent(
-      "chatbotComponent",
-      "components/chatbotWidget.html"
-    );
-
-    /* LOAD CHATBOT JS AFTER COMPONENT EXISTS */
-
-    const chatbotScript =
-  document.createElement("script");
-
-    chatbotScript.src =
-      "js/chatbot.js";
-
-    chatbotScript.onload = () => {
-
-      if (
-        typeof initializeChatbot === "function"
-      ) {
-
-        initializeChatbot();
-      }
-    };
-
-    document.body.appendChild(chatbotScript);
-      }
-
-  initializePage();
-
-</script>
 
 </body>
 
