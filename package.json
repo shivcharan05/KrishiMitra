@@ -16,5 +16,8 @@
   "bugs": {
     "url": "https://github.com/shivcharan05/KrishiMitra/issues"
   },
-  "homepage": "https://github.com/shivcharan05/KrishiMitra#readme"
+  "homepage": "https://github.com/shivcharan05/KrishiMitra#readme",
+  "dependencies": {
+    "firebase": "^12.13.0"
+  }
 }
