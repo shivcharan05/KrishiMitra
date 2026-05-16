@@ -95,43 +95,49 @@ function initializeChatbot() {
       "hidden"
     );
 
-    setTimeout(() => {
+    fetch("http://localhost:5002/chat", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ message: message })
+    })
+    .then(res => res.json())
+    .then(data => {
+      typingIndicator.classList.add("hidden");
 
-      typingIndicator.classList.add(
-        "hidden"
-      );
-
-      const aiMessage =
-        document.createElement("div");
-
-      aiMessage.className =
-        "chat-message ai-message";
+      const aiMessage = document.createElement("div");
+      aiMessage.className = "chat-message ai-message";
+      
+      // Formatting basic markdown (bold/italic) to HTML for nice display
+      let formattedReply = data.reply
+        .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+        .replace(/\*(.*?)\*/g, '<em>$1</em>')
+        .replace(/\n/g, '<br>');
 
       aiMessage.innerHTML = `
-        <div class="message-avatar">
-          🤖
-        </div>
-
+        <div class="message-avatar">🤖</div>
         <div class="message-content">
-
-          <p>
-
-            I understand your farming query regarding:
-            "<strong>${message}</strong>"
-
-          </p>
-
+          <p>${formattedReply}</p>
         </div>
       `;
 
-      chatbotBody.appendChild(
-        aiMessage
-      );
-
-      chatbotBody.scrollTop =
-        chatbotBody.scrollHeight;
-
-    }, 1200);
+      chatbotBody.appendChild(aiMessage);
+      chatbotBody.scrollTop = chatbotBody.scrollHeight;
+    })
+    .catch(err => {
+      console.error(err);
+      typingIndicator.classList.add("hidden");
+      
+      const errorMsg = document.createElement("div");
+      errorMsg.className = "chat-message ai-message";
+      errorMsg.innerHTML = `
+        <div class="message-avatar">🤖</div>
+        <div class="message-content">
+          <p>Sorry, I'm having trouble connecting to my brain right now.</p>
+        </div>
+      `;
+      chatbotBody.appendChild(errorMsg);
+      chatbotBody.scrollTop = chatbotBody.scrollHeight;
+    });
   }
 
   /* SEND BUTTON */

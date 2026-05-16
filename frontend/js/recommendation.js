@@ -201,13 +201,51 @@ document.addEventListener("DOMContentLoaded", () => {
       generateBtn.disabled = true;
       generateBtn.style.opacity = "0.8";
 
-      /* MOCK: Simulate API processing wait, then alert user */
-      setTimeout(() => {
-        alert("AI Processing Complete! (Check console for the full JSON payload). Integration with AI backend coming next!");
+      /* REAL API CALL */
+      try {
+        const response = await fetch("http://localhost:5002/predict-crop", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify(aiPayload)
+        });
+
+        if (!response.ok) throw new Error("Failed to fetch recommendation from ML Model");
+
+        const aiData = await response.json();
+        const recommendedCrop = aiData.recommended_crop;
+
+        /* Update UI with Recommendation */
+        const aiSummaryCard = document.querySelector(".ai-summary-card");
+        const titleEl = aiSummaryCard.querySelector("h2");
+        const descEl = aiSummaryCard.querySelector("p");
+
+        if (titleEl) {
+          titleEl.textContent = `${recommendedCrop} Is Your Best Recommended Crop`;
+        }
+        
+        if (descEl) {
+          descEl.textContent = `Based on weather, soil health, rainfall, and market trends, ${recommendedCrop} provides the highest profitability and lowest risk for your region this season.`;
+        }
+
+        // Also update the first card
+        const firstCardTitle = document.querySelector(".crop-recommendation-card h3");
+        if (firstCardTitle) {
+          firstCardTitle.textContent = recommendedCrop;
+        }
+
+        // Scroll into view
+        aiSummaryCard.scrollIntoView({ behavior: "smooth" });
+
+      } catch (error) {
+        console.error("ML API Error:", error);
+        alert("Could not get recommendation. Ensure the Flask ML model is running on port 5002.");
+      } finally {
         generateBtn.innerHTML = "Generate AI Recommendation";
         generateBtn.disabled = false;
         generateBtn.style.opacity = "1";
-      }, 1500);
+      }
 
     });
   }
