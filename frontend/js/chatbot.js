@@ -31,42 +31,44 @@ function initializeChatbot() {
     !chatbotToggle ||
     !chatbotWindow
   ) {
-    console.log("Chatbot elements not found");
+
+    console.log(
+      "Chatbot elements missing"
+    );
+
     return;
   }
 
-  /* OPEN CHAT */
+  /* FORCE HIDDEN INITIALLY */
 
-  chatbotToggle.addEventListener("click", () => {
+  chatbotWindow.classList.add(
+    "hidden"
+  );
 
-        if (
-      chatbotWindow.classList.contains("hidden")
-    ) {
+  /* OPEN / CLOSE CHAT */
 
-      chatbotWindow.classList.remove("hidden");
+  chatbotToggle.onclick = () => {
 
-    } else {
+    chatbotWindow.classList.toggle(
+      "hidden"
+    );
+  };
 
-      chatbotWindow.classList.add("hidden");
-    }
-  });
+  chatbotClose.onclick = () => {
 
-  /* CLOSE CHAT */
-
-  chatbotClose?.addEventListener("click", () => {
-
-    chatbotWindow.classList.add("hidden");
-  });
+    chatbotWindow.classList.add(
+      "hidden"
+    );
+  };
 
   /* SEND MESSAGE */
 
   function sendMessage() {
 
-    const message = chatInput.value.trim();
+    const message =
+      chatInput.value.trim();
 
     if (!message) return;
-
-    /* USER MESSAGE */
 
     const userMessage =
       document.createElement("div");
@@ -80,25 +82,24 @@ function initializeChatbot() {
       </div>
     `;
 
-    chatbotBody.appendChild(userMessage);
+    chatbotBody.appendChild(
+      userMessage
+    );
 
     chatInput.value = "";
 
     chatbotBody.scrollTop =
       chatbotBody.scrollHeight;
 
-    /* SHOW TYPING */
-
-    typingIndicator.classList.remove("hidden");
-
-    chatbotBody.scrollTop =
-      chatbotBody.scrollHeight;
-
-    /* AI RESPONSE */
+    typingIndicator.classList.remove(
+      "hidden"
+    );
 
     setTimeout(() => {
 
-      typingIndicator.classList.add("hidden");
+      typingIndicator.classList.add(
+        "hidden"
+      );
 
       const aiMessage =
         document.createElement("div");
@@ -118,25 +119,22 @@ function initializeChatbot() {
             I understand your farming query regarding:
             "<strong>${message}</strong>"
 
-            <br><br>
-
-            AI recommendations and advanced
-            farming assistance will be connected soon.
-
           </p>
 
         </div>
       `;
 
-      chatbotBody.appendChild(aiMessage);
+      chatbotBody.appendChild(
+        aiMessage
+      );
 
       chatbotBody.scrollTop =
         chatbotBody.scrollHeight;
 
-    }, 1500);
+    }, 1200);
   }
 
-  /* BUTTON */
+  /* SEND BUTTON */
 
   sendBtn?.addEventListener(
     "click",
@@ -159,16 +157,21 @@ function initializeChatbot() {
   /* QUICK CHIPS */
 
   const chips =
-    document.querySelectorAll(".quick-chip");
+    document.querySelectorAll(
+      ".quick-chip"
+    );
 
-  chips.forEach(chip => {
+  chips.forEach((chip) => {
 
-    chip.addEventListener("click", () => {
+    chip.addEventListener(
+      "click",
+      () => {
 
-      chatInput.value =
-        chip.innerText;
+        chatInput.value =
+          chip.innerText;
 
-      sendMessage();
-    });
+        sendMessage();
+      }
+    );
   });
 }

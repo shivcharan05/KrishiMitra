@@ -471,18 +471,22 @@
   </script>
 
 <!-- CHATBOT -->
-
 <div id="chatbotComponent"></div>
+
+<script src="js/chatbot.js"></script>
 
 <script>
 
   async function loadComponent(id, file) {
 
-    const response = await fetch(file);
+    const response =
+      await fetch(file);
 
-    const data = await response.text();
+    const data =
+      await response.text();
 
-    document.getElementById(id).innerHTML = data;
+    document.getElementById(id)
+      .innerHTML = data;
   }
 
   async function initializePage() {
@@ -501,22 +505,14 @@
       "components/chatbotWidget.html"
     );
 
-    /* LOAD CHATBOT JS AFTER COMPONENT EXISTS */
+    /* INITIALIZE CHATBOT */
 
-    const chatbotScript =
-      document.createElement("script");
-
-    chatbotScript.src = "js/chatbot.js";
-
-    document.body.appendChild(chatbotScript);
+    initializeChatbot();
   }
 
   initializePage();
 
 </script>
-
-
-
 </body>
 
 </html>
