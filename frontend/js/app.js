@@ -73,26 +73,41 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   /* ======================================
-     ACTIVE SIDEBAR LINK
+     ACTIVE SIDEBAR LINK (ASYNC SUPPORT)
   ====================================== */
 
-  const currentPage =
-    window.location.pathname
-      .split("/")
-      .pop();
+  function highlightSidebar() {
+    const currentUrl = window.location.href;
+    const sidebarLinks = document.querySelectorAll(".sidebar-nav a");
 
-  const sidebarLinks =
-    document.querySelectorAll(".sidebar-link");
+    sidebarLinks.forEach(link => {
+      const href = link.getAttribute("href");
+      
+      // If the current URL contains the link's href, it's the active page
+      // We also handle the base case where href="index.html" might just be "/"
+      if (currentUrl.includes(href) || (href === "index.html" && currentUrl.endsWith("/"))) {
+        link.classList.add("active");
+      } else {
+        link.classList.remove("active");
+      }
+    });
+  }
 
-  sidebarLinks.forEach(link => {
+  // Run once in case it's already loaded
+  highlightSidebar();
 
-    const href = link.getAttribute("href");
-
-    if (href === currentPage) {
-
-      link.classList.add("active-link");
+  // Watch for dynamic component injection (sidebar.html)
+  const observer = new MutationObserver(() => {
+    if (document.querySelector(".sidebar-nav a")) {
+      // Small delay to ensure DOM is fully painted
+      setTimeout(() => {
+        highlightSidebar();
+      }, 50);
+      observer.disconnect(); // Stop watching once applied
     }
   });
+  
+  observer.observe(document.body, { childList: true, subtree: true });
 
   /* ======================================
      LOADING SIMULATION
