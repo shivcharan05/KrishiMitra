@@ -73,26 +73,35 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   /* ======================================
-     ACTIVE SIDEBAR LINK
+     ACTIVE SIDEBAR LINK (ASYNC SUPPORT)
   ====================================== */
 
-  const currentPage =
-    window.location.pathname
-      .split("/")
-      .pop();
+  function highlightSidebar() {
+    const currentPage = window.location.pathname.split("/").pop() || "index.html";
+    const sidebarLinks = document.querySelectorAll(".sidebar-nav a");
 
-  const sidebarLinks =
-    document.querySelectorAll(".sidebar-link");
+    sidebarLinks.forEach(link => {
+      const href = link.getAttribute("href");
+      if (href === currentPage) {
+        link.classList.add("active");
+      } else {
+        link.classList.remove("active");
+      }
+    });
+  }
 
-  sidebarLinks.forEach(link => {
+  // Run once in case it's already loaded
+  highlightSidebar();
 
-    const href = link.getAttribute("href");
-
-    if (href === currentPage) {
-
-      link.classList.add("active-link");
+  // Watch for dynamic component injection (sidebar.html)
+  const observer = new MutationObserver(() => {
+    if (document.querySelector(".sidebar-nav a")) {
+      highlightSidebar();
+      observer.disconnect(); // Stop watching once applied
     }
   });
+  
+  observer.observe(document.body, { childList: true, subtree: true });
 
   /* ======================================
      LOADING SIMULATION
