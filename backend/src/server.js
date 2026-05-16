@@ -15,10 +15,6 @@ app.use(express.json());
 const weatherRoutes = require(
   "./routes/weatherRoutes"
 );
-app.use(
-  "/api/weather",
-  weatherRoutes
-);
 
 app.get("/", (req, res) => {
   res.send("KrishiMitra  API Running");
@@ -26,7 +22,6 @@ app.get("/", (req, res) => {
 
 const testRoutes = require("./routes/testRoutes");
 
-app.use("/api/test", testRoutes);
 
 const PORT = process.env.PORT || 5000;
 
@@ -34,3 +29,19 @@ app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
 
+const chatbotRoutes = require(
+  "./routes/chatbotRoutes"
+);
+
+
+app.use(
+  "/api/weather",
+  weatherRoutes
+);
+
+app.use("/api/test", testRoutes);
+
+app.use(
+  "/api/chatbot",
+  chatbotRoutes
+);
