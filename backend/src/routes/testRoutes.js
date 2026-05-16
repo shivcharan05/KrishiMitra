@@ -1,7 +1,6 @@
 const express = require("express");
 const router = express.Router();
-
-const User = require("../models/User");
+const User = require('../models/User');
 const verifyFirebaseToken = require("../middleware/authMiddleware");
 
 router.post("/create-user", verifyFirebaseToken, async (req, res) => {
