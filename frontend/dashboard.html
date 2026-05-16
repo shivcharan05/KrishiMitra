@@ -288,11 +288,7 @@
 
   </main>
 
-  <!-- FLOATING BUTTON -->
-
-  <button class="floating-ai-btn pulse-glow">
-    🤖
-  </button>
+  
 
   <!-- JS -->
 
@@ -353,12 +349,23 @@
     /* LOAD CHATBOT JS AFTER COMPONENT EXISTS */
 
     const chatbotScript =
-      document.createElement("script");
+  document.createElement("script");
 
-    chatbotScript.src = "js/chatbot.js";
+    chatbotScript.src =
+      "js/chatbot.js";
+
+    chatbotScript.onload = () => {
+
+      if (
+        typeof initializeChatbot === "function"
+      ) {
+
+        initializeChatbot();
+      }
+    };
 
     document.body.appendChild(chatbotScript);
-  }
+      }
 
   initializePage();
 
