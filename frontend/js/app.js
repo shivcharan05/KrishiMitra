@@ -111,3 +111,83 @@ document.addEventListener("DOMContentLoaded", () => {
   }, 1500);
 
 });
+/* =========================================
+   CHATBOT TOGGLE SYSTEM
+========================================= */
+
+document.addEventListener("DOMContentLoaded", () => {
+
+  const chatbotToggle =
+    document.getElementById("chatbotToggle");
+
+  const chatbotWindow =
+    document.getElementById("chatbotWindow");
+
+  const chatbotClose =
+    document.getElementById("chatbotClose");
+
+  // SAFETY CHECK
+
+  if (
+    chatbotToggle &&
+    chatbotWindow &&
+    chatbotClose
+  ) {
+
+    /* OPEN CHATBOT */
+
+    chatbotToggle.addEventListener(
+      "click",
+      () => {
+
+        chatbotWindow.classList.remove("hidden");
+
+      }
+    );
+
+    /* =========================================
+   CHATBOT TOGGLE
+========================================= */
+
+window.addEventListener("load", () => {
+
+  const chatbotToggle =
+    document.getElementById("chatbotToggle");
+
+  const chatbotWindow =
+    document.getElementById("chatbotWindow");
+
+  const chatbotClose =
+    document.getElementById("chatbotClose");
+
+  if (
+    chatbotToggle &&
+    chatbotWindow &&
+    chatbotClose
+  ) {
+
+    /* OPEN CHATBOT */
+
+    chatbotToggle.addEventListener(
+      "click",
+      () => {
+
+        chatbotWindow.classList.remove("hidden");
+
+      }
+    );
+
+    /* CLOSE CHATBOT */
+
+    chatbotClose.addEventListener(
+      "click",
+      () => {
+
+        chatbotWindow.classList.add("hidden");
+
+      }
+    );
+
+  }
+
+});

@@ -2,7 +2,7 @@
    KRISHIMITRA AI — CHATBOT
 ========================================= */
 
-document.addEventListener("DOMContentLoaded", () => {
+function initializeChatbot() {
 
   const chatbotToggle =
     document.getElementById("chatbotToggle");
@@ -25,11 +25,30 @@ document.addEventListener("DOMContentLoaded", () => {
   const typingIndicator =
     document.getElementById("typingIndicator");
 
+  /* SAFETY CHECK */
+
+  if (
+    !chatbotToggle ||
+    !chatbotWindow
+  ) {
+    console.log("Chatbot elements not found");
+    return;
+  }
+
   /* OPEN CHAT */
 
-  chatbotToggle?.addEventListener("click", () => {
+  chatbotToggle.addEventListener("click", () => {
 
-    chatbotWindow.classList.toggle("hidden");
+        if (
+      chatbotWindow.classList.contains("hidden")
+    ) {
+
+      chatbotWindow.classList.remove("hidden");
+
+    } else {
+
+      chatbotWindow.classList.add("hidden");
+    }
   });
 
   /* CLOSE CHAT */
@@ -49,7 +68,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     /* USER MESSAGE */
 
-    const userMessage = document.createElement("div");
+    const userMessage =
+      document.createElement("div");
 
     userMessage.className =
       "chat-message user-message";
@@ -118,17 +138,23 @@ document.addEventListener("DOMContentLoaded", () => {
 
   /* BUTTON */
 
-  sendBtn?.addEventListener("click", sendMessage);
+  sendBtn?.addEventListener(
+    "click",
+    sendMessage
+  );
 
   /* ENTER KEY */
 
-  chatInput?.addEventListener("keypress", (e) => {
+  chatInput?.addEventListener(
+    "keypress",
+    (e) => {
 
-    if (e.key === "Enter") {
+      if (e.key === "Enter") {
 
-      sendMessage();
+        sendMessage();
+      }
     }
-  });
+  );
 
   /* QUICK CHIPS */
 
@@ -145,4 +171,4 @@ document.addEventListener("DOMContentLoaded", () => {
       sendMessage();
     });
   });
-});
+}

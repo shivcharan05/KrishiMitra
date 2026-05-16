@@ -1373,6 +1373,7 @@ body {
   z-index: 9999;
 }
 
+
 /* FLOATING BUTTON */
 
 .chatbot-toggle {
@@ -1837,4 +1838,16 @@ body {
     flex-direction: column;
     gap: 8px;
   }
+}
+
+/* =========================================
+   CHATBOT VISIBILITY FIX
+========================================= */
+
+.hidden {
+  display: none !important;
+}
+
+.chatbot-window {
+  display: flex;
 }
