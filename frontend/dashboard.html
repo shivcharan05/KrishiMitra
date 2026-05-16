@@ -157,9 +157,8 @@
 
             <div class="weather-temp">
 
-              <h1>28°C</h1>
-
-              <p>Partly Cloudy</p>
+              <h1 id="weatherTemp">--°C</h1>
+              <p id="weatherCondition">Loading...</p>
 
             </div>
 
@@ -167,17 +166,17 @@
 
               <div>
                 <span>Humidity</span>
-                <strong>68%</strong>
+                <strong id="weatherHumidity">--%</strong>
               </div>
 
               <div>
                 <span>Wind</span>
-                <strong>12 km/h</strong>
+                <strong id="weatherWind">-- km/h</strong>
               </div>
 
               <div>
                 <span>Rain</span>
-                <strong>78%</strong>
+                <strong id="weatherRain">--%</strong>
               </div>
 
             </div>
@@ -204,69 +203,14 @@
 
         <!-- RECOMMENDATIONS -->
 
-        <div class="glass-card dashboard-widget">
+        <div
+        class="recommendation-list"
+        id="recommendationList"
+        >
 
-          <div class="widget-header">
-
-            <h3>AI Crop Recommendations</h3>
-
-            <span>Top Matches</span>
-
-          </div>
-
-          <div class="recommendation-list">
-
-            <div class="recommendation-item">
-
-              <div>
-
-                <h4>Soybean</h4>
-                <p>Profitability: High</p>
-
-              </div>
-
-              <span class="recommendation-score">
-                94%
-              </span>
-
-            </div>
-
-            <div class="recommendation-item">
-
-              <div>
-
-                <h4>Sugarcane</h4>
-                <p>Profitability: Medium</p>
-
-              </div>
-
-              <span class="recommendation-score">
-                82%
-              </span>
-
-            </div>
-
-            <div class="recommendation-item">
-
-              <div>
-
-                <h4>Wheat</h4>
-                <p>Risk Level: Low</p>
-
-              </div>
-
-              <span class="recommendation-score">
-                79%
-              </span>
-
-            </div>
-
-          </div>
+        <p>Loading recommendations...</p>
 
         </div>
-
-      </div>
-
       <!-- RIGHT COLUMN -->
 
       <div class="dashboard-right">
@@ -289,7 +233,7 @@
 
               <div class="progress-ring">
 
-                <span>86%</span>
+                <span id="soilHealthScore">--%</span>
 
               </div>
 
@@ -297,9 +241,9 @@
 
             <div class="soil-details">
 
-              <p>pH Level: <strong>6.8</strong></p>
-              <p>Moisture: <strong>72%</strong></p>
-              <p>Nitrogen: <strong>Optimal</strong></p>
+              <p>pH Level: <strong id="soilPH">--</strong></p>
+              <p>Moisture: <strong id="soilMoisture">--%</strong></p>
+              <p>Nitrogen: <strong id="soilNitrogen">--</strong></p>
 
             </div>
 
@@ -309,61 +253,12 @@
 
         <!-- ALERTS -->
 
-        <div class="glass-card dashboard-widget">
+       <div
+        class="alerts-list"
+        id="alertsList"
+        >
 
-          <div class="widget-header">
-
-            <h3>Smart Alerts</h3>
-
-            <span>3 New</span>
-
-          </div>
-
-          <div class="alerts-list">
-
-            <div class="alert-item warning-alert">
-
-              <span>⚠️</span>
-
-              <div>
-
-                <h4>Heavy Rain Expected</h4>
-
-                <p>Tomorrow morning in your region.</p>
-
-              </div>
-
-            </div>
-
-            <div class="alert-item success-alert">
-
-              <span>✅</span>
-
-              <div>
-
-                <h4>Crop Health Stable</h4>
-
-                <p>No disease detected this week.</p>
-
-              </div>
-
-            </div>
-
-            <div class="alert-item danger-alert">
-
-              <span>🚨</span>
-
-              <div>
-
-                <h4>Market Price Drop</h4>
-
-                <p>Soybean market may fluctuate soon.</p>
-
-              </div>
-
-            </div>
-
-          </div>
+        <p>Loading alerts...</p>
 
         </div>
 
