@@ -50,9 +50,14 @@ document.addEventListener("DOMContentLoaded", () => {
       });
 
       if (isValid) {
+        
+        // Find the email input and save to localStorage
+        const emailInput = form.querySelector('input[type="email"]');
+        if (emailInput && emailInput.value) {
+          localStorage.setItem('krishimitra_user_email', emailInput.value.trim());
+        }
 
         alert("Authentication Successful!");
-
         window.location.href = "dashboard.html";
       }
     });

@@ -33,32 +33,37 @@
 
     <section class="glass-card profile-header">
 
-      <div class="profile-left">
+      <div class="profile-left" style="position: relative;">
 
-        <img
-          src="assets/images/farmer-avatar.png"
-          alt="Farmer"
-          class="profile-avatar"
-        >
+        <div class="avatar-wrapper" style="position: relative; display: inline-block;">
+          <img
+            id="profileAvatar"
+            src="assets/images/farmer-avatar.png"
+            alt="Farmer"
+            class="profile-avatar"
+          >
+          <div id="avatarOverlay" class="avatar-overlay" style="display: none; position: absolute; bottom: 0; left: 0; right: 0; background: rgba(0,0,0,0.6); color: white; text-align: center; font-size: 0.8rem; padding: 5px; cursor: pointer; border-bottom-left-radius: 50%; border-bottom-right-radius: 50%;">
+            Change
+            <input type="file" id="avatarUpload" accept="image/*" style="display: none;">
+          </div>
+        </div>
 
         <div>
 
-          <h2>Ramesh Patil</h2>
+          <h2 id="profileNameText">Ramesh Patil</h2>
+          <input type="text" id="profileNameInput" class="form-input" style="display: none;" placeholder="Full Name">
 
-          <p class="text-soft">
-
+          <p class="text-soft" id="profileLocationText">
             Progressive Farmer • Maharashtra
-
           </p>
+          <input type="text" id="profileLocationInput" class="form-input" style="display: none; margin-top: 5px;" placeholder="Location (e.g. Maharashtra)">
 
         </div>
 
       </div>
 
-      <button class="btn-primary">
-
+      <button id="editProfileBtn" class="btn-primary">
         Edit Profile
-
       </button>
 
     </section>
@@ -82,31 +87,27 @@
         <div class="profile-info">
 
           <div class="info-row">
-
             <span>Total Land</span>
-            <strong>12 Acres</strong>
-
+            <strong id="landText">12 Acres</strong>
+            <input type="text" id="landInput" class="form-input" style="display: none;" placeholder="e.g. 12 Acres">
           </div>
 
           <div class="info-row">
-
             <span>Main Crop</span>
-            <strong>Soybean</strong>
-
+            <strong id="cropText">Soybean</strong>
+            <input type="text" id="cropInput" class="form-input" style="display: none;" placeholder="e.g. Soybean">
           </div>
 
           <div class="info-row">
-
             <span>Irrigation Type</span>
-            <strong>Drip Irrigation</strong>
-
+            <strong id="irrigationText">Drip Irrigation</strong>
+            <input type="text" id="irrigationInput" class="form-input" style="display: none;" placeholder="e.g. Drip Irrigation">
           </div>
 
           <div class="info-row">
-
             <span>Experience</span>
-            <strong>15 Years</strong>
-
+            <strong id="experienceText">15 Years</strong>
+            <input type="text" id="experienceInput" class="form-input" style="display: none;" placeholder="e.g. 15 Years">
           </div>
 
         </div>

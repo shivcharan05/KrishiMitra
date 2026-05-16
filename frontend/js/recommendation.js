@@ -107,7 +107,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const generateBtn = document.getElementById("generateBtn");
   
   if (generateBtn) {
-    generateBtn.addEventListener("click", () => {
+    generateBtn.addEventListener("click", async () => {
       
       /* Validate Location is fetched */
       if (!window.recommendationData.location.latitude) {
@@ -130,7 +130,7 @@ document.addEventListener("DOMContentLoaded", () => {
       /* Collect Soil Data Preference */
       const hasSoilData = document.querySelector('input[name="hasSoilData"]:checked').value === "yes";
       
-      let manualSoilData = null;
+      let finalSoilData = null;
       
       if (hasSoilData) {
         const ph = document.getElementById("soilPh").value;
@@ -143,27 +143,58 @@ document.addEventListener("DOMContentLoaded", () => {
           return;
         }
 
-        manualSoilData = {
+        finalSoilData = {
           pH: parseFloat(ph),
           Nitrogen: parseFloat(n),
           Phosphorous: parseFloat(p),
-          Potassium: parseFloat(k)
+          Potassium: parseFloat(k),
+          source: "manual"
         };
+      } else {
+        // Fetch from Backend API
+        generateBtn.innerHTML = "📡 Fetching Soil Intelligence...";
+        generateBtn.disabled = true;
+        
+        try {
+          const lat = window.recommendationData.location.latitude;
+          const lon = window.recommendationData.location.longitude;
+          const district = window.recommendationData.location.city || "default";
+
+          const response = await fetch(`http://localhost:5000/api/soil?lat=${lat}&lon=${lon}&district=${district}`);
+          if (!response.ok) throw new Error("Failed to fetch soil data");
+          
+          finalSoilData = await response.json();
+          console.log("Fetched Soil Data:", finalSoilData);
+        } catch (error) {
+          console.error("Soil API Error:", error);
+          alert("Could not fetch soil data automatically. Please enter it manually or try again.");
+          generateBtn.innerHTML = "Generate AI Recommendation";
+          generateBtn.disabled = false;
+          return;
+        }
       }
 
-      /* Store exactly what we captured */
-      window.recommendationData.farmProfile = {
-        landSizeAcres: parseFloat(landSize),
+      /* Build the exact flat payload required by the AI Model */
+      const aiPayload = {
+        temperature: window.recommendationData.weather?.temperature || 0,
+        humidity: window.recommendationData.weather?.humidity || 0,
+        rainfall: window.recommendationData.weather?.rainfall || 0,
         soilType: soilType,
-        waterAvailability: waterAvail,
-        budgetLevel: budgetLevel,
-        hasExactSoilData: hasSoilData,
-        manualSoilData: manualSoilData 
+        ph: finalSoilData?.pH || 0,
+        nitrogen: finalSoilData?.Nitrogen || 0,
+        phosphorus: finalSoilData?.Phosphorous || 0,
+        potassium: finalSoilData?.Potassium || 0,
+        waterAvailable: waterAvail,
+        farmArea: parseFloat(landSize),
+        budget: budgetLevel
       };
 
-      /* Log the final, beautiful payload for our AI */
-      console.log("🚀 Farm AI Payload Ready:");
-      console.log(JSON.stringify(window.recommendationData, null, 2));
+      /* Store the exact payload back into the window object */
+      window.recommendationData.aiPayload = aiPayload;
+
+      /* Log the final payload matching the requested schema */
+      console.log("🚀 Farm AI Payload Ready (Strict Schema):");
+      console.log(JSON.stringify(aiPayload, null, 2));
 
       /* Update UI to show processing state */
       generateBtn.innerHTML = "🤖 Analyzing Farm Profile...";
