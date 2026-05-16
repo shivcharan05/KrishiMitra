@@ -20,6 +20,9 @@ app.use(
   weatherRoutes
 );
 
+const soilRoutes = require("./routes/soilRoutes");
+app.use("/api/soil", soilRoutes);
+
 app.get("/", (req, res) => {
   res.send("KrishiMitra  API Running");
 });
