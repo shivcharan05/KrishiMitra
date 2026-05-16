@@ -77,12 +77,15 @@ document.addEventListener("DOMContentLoaded", () => {
   ====================================== */
 
   function highlightSidebar() {
-    const currentPage = window.location.pathname.split("/").pop() || "index.html";
+    const currentUrl = window.location.href;
     const sidebarLinks = document.querySelectorAll(".sidebar-nav a");
 
     sidebarLinks.forEach(link => {
       const href = link.getAttribute("href");
-      if (href === currentPage) {
+      
+      // If the current URL contains the link's href, it's the active page
+      // We also handle the base case where href="index.html" might just be "/"
+      if (currentUrl.includes(href) || (href === "index.html" && currentUrl.endsWith("/"))) {
         link.classList.add("active");
       } else {
         link.classList.remove("active");
@@ -96,7 +99,10 @@ document.addEventListener("DOMContentLoaded", () => {
   // Watch for dynamic component injection (sidebar.html)
   const observer = new MutationObserver(() => {
     if (document.querySelector(".sidebar-nav a")) {
-      highlightSidebar();
+      // Small delay to ensure DOM is fully painted
+      setTimeout(() => {
+        highlightSidebar();
+      }, 50);
       observer.disconnect(); // Stop watching once applied
     }
   });
