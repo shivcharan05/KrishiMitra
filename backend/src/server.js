@@ -23,6 +23,9 @@ app.use(
 const soilRoutes = require("./routes/soilRoutes");
 app.use("/api/soil", soilRoutes);
 
+const userRoutes = require("./routes/userRoutes");
+app.use("/api/users", userRoutes);
+
 app.get("/", (req, res) => {
   res.send("KrishiMitra  API Running");
 });
