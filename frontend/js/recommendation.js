@@ -174,19 +174,27 @@ document.addEventListener("DOMContentLoaded", () => {
         }
       }
 
-      /* Store exactly what we captured */
-      window.recommendationData.farmProfile = {
-        landSizeAcres: parseFloat(landSize),
+      /* Build the exact flat payload required by the AI Model */
+      const aiPayload = {
+        temperature: window.recommendationData.weather?.temperature || 0,
+        humidity: window.recommendationData.weather?.humidity || 0,
+        rainfall: window.recommendationData.weather?.rainfall || 0,
         soilType: soilType,
-        waterAvailability: waterAvail,
-        budgetLevel: budgetLevel,
-        hasExactSoilData: hasSoilData,
-        soilProperties: finalSoilData 
+        ph: finalSoilData?.pH || 0,
+        nitrogen: finalSoilData?.Nitrogen || 0,
+        phosphorus: finalSoilData?.Phosphorous || 0,
+        potassium: finalSoilData?.Potassium || 0,
+        waterAvailable: waterAvail,
+        farmArea: parseFloat(landSize),
+        budget: budgetLevel
       };
 
-      /* Log the final, beautiful payload for our AI */
-      console.log("🚀 Farm AI Payload Ready:");
-      console.log(JSON.stringify(window.recommendationData, null, 2));
+      /* Store the exact payload back into the window object */
+      window.recommendationData.aiPayload = aiPayload;
+
+      /* Log the final payload matching the requested schema */
+      console.log("🚀 Farm AI Payload Ready (Strict Schema):");
+      console.log(JSON.stringify(aiPayload, null, 2));
 
       /* Update UI to show processing state */
       generateBtn.innerHTML = "🤖 Analyzing Farm Profile...";
