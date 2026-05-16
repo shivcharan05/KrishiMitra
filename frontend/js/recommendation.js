@@ -174,6 +174,8 @@ document.addEventListener("DOMContentLoaded", () => {
         }
       }
 
+      const prefLang = document.getElementById("prefLang").value;
+
       /* Build the exact flat payload required by the AI Model */
       const aiPayload = {
         temperature: window.recommendationData.weather?.temperature || 0,
@@ -186,7 +188,8 @@ document.addEventListener("DOMContentLoaded", () => {
         potassium: finalSoilData?.Potassium || 0,
         waterAvailable: waterAvail,
         farmArea: parseFloat(landSize),
-        budget: budgetLevel
+        budget: budgetLevel,
+        preferredLanguage: prefLang
       };
 
       /* Store the exact payload back into the window object */
@@ -201,13 +204,29 @@ document.addEventListener("DOMContentLoaded", () => {
       generateBtn.disabled = true;
       generateBtn.style.opacity = "0.8";
 
-      /* MOCK: Simulate API processing wait, then alert user */
-      setTimeout(() => {
-        alert("AI Processing Complete! (Check console for the full JSON payload). Integration with AI backend coming next!");
+      try {
+        const response = await fetch("http://localhost:5000/api/chatbot/recommend", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(aiPayload)
+        });
+
+        const data = await response.json();
+
+        if (data.success && data.recommendation) {
+          document.getElementById("aiRecommendationResult").style.display = "block";
+          document.getElementById("aiRecommendationContent").innerHTML = data.recommendation;
+        } else {
+          alert("Error generating recommendation: " + (data.message || "Unknown error"));
+        }
+      } catch (error) {
+        console.error("AI Recommendation Error:", error);
+        alert("Could not connect to the AI service. Please try again later.");
+      } finally {
         generateBtn.innerHTML = "Generate AI Recommendation";
         generateBtn.disabled = false;
         generateBtn.style.opacity = "1";
-      }, 1500);
+      }
 
     });
   }

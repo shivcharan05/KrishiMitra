@@ -82,7 +82,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     sidebarLinks.forEach(link => {
       const href = link.getAttribute("href");
-      
+
       // If the current URL contains the link's href, it's the active page
       // We also handle the base case where href="index.html" might just be "/"
       if (currentUrl.includes(href) || (href === "index.html" && currentUrl.endsWith("/"))) {
@@ -106,7 +106,7 @@ document.addEventListener("DOMContentLoaded", () => {
       observer.disconnect(); // Stop watching once applied
     }
   });
-  
+
   observer.observe(document.body, { childList: true, subtree: true });
 
   /* ======================================
@@ -164,45 +164,45 @@ document.addEventListener("DOMContentLoaded", () => {
    CHATBOT TOGGLE
 ========================================= */
 
-window.addEventListener("load", () => {
+    window.addEventListener("load", () => {
 
-  const chatbotToggle =
-    document.getElementById("chatbotToggle");
+      const chatbotToggle =
+        document.getElementById("chatbotToggle");
 
-  const chatbotWindow =
-    document.getElementById("chatbotWindow");
+      const chatbotWindow =
+        document.getElementById("chatbotWindow");
 
-  const chatbotClose =
-    document.getElementById("chatbotClose");
+      const chatbotClose =
+        document.getElementById("chatbotClose");
 
-  if (
-    chatbotToggle &&
-    chatbotWindow &&
-    chatbotClose
-  ) {
+      if (
+        chatbotToggle &&
+        chatbotWindow &&
+        chatbotClose
+      ) {
 
-    /* OPEN CHATBOT */
+        /* OPEN CHATBOT */
 
-    chatbotToggle.addEventListener(
-      "click",
-      () => {
+        chatbotToggle.addEventListener(
+          "click",
+          () => {
 
-        chatbotWindow.classList.remove("hidden");
+            chatbotWindow.classList.remove("hidden");
+
+          }
+        );
+
+        /* CLOSE CHATBOT */
+
+        chatbotClose.addEventListener(
+          "click",
+          () => {
+
+            chatbotWindow.classList.add("hidden");
+
+          }
+        );
 
       }
-    );
 
-    /* CLOSE CHATBOT */
-
-    chatbotClose.addEventListener(
-      "click",
-      () => {
-
-        chatbotWindow.classList.add("hidden");
-
-      }
-    );
-
-  }
-
-});
+    })

@@ -96,10 +96,12 @@ function initializeChatbot() {
     );
 
     // Make real request to backend Gemini AI
+    const contextData = window.recommendationData || {};
+
     fetch("http://localhost:5000/api/chatbot/chat", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ message: message })
+      body: JSON.stringify({ message: message, context: contextData })
     })
     .then(response => response.json())
     .then(data => {

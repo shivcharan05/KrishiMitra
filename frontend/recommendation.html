@@ -149,6 +149,17 @@
               </div>
             </div>
 
+            <!-- Preferred Language -->
+            <div class="form-group">
+              <label for="prefLang">Preferred Language</label>
+              <div class="custom-select-wrapper">
+                <select id="prefLang" required>
+                  <option value="English" selected>English</option>
+                  <option value="Hindi">Hindi (हिंदी)</option>
+                </select>
+              </div>
+            </div>
+
           </div> <!-- /form-grid -->
 
           <!-- Soil Data Section -->
@@ -207,9 +218,16 @@
 
     </div>
 
-    <!-- AI SUMMARY -->
+    <!-- AI RECOMMENDATION RESULT CONTAINER -->
+    <div id="aiRecommendationResult" style="display: none; margin-top: 2rem;">
+      <section class="glass-card ai-glow" style="padding: 2rem; line-height: 1.6;">
+        <div id="aiRecommendationContent"></div>
+      </section>
+    </div>
 
-    <section class="glass-card ai-summary-card ai-glow">
+    <!-- AI SUMMARY (Static mock content hidden) -->
+
+    <section id="mockSummaryCard" class="glass-card ai-summary-card ai-glow" style="display: none;">
 
       <div class="summary-left">
 
@@ -246,9 +264,9 @@
 
     </section>
 
-    <!-- RECOMMENDATION CARDS -->
+    <!-- RECOMMENDATION CARDS (Static mock content hidden) -->
 
-    <section class="recommendation-grid">
+    <section id="mockGridCards" class="recommendation-grid" style="display: none;">
 
       <!-- CARD 1 -->
 
@@ -436,9 +454,9 @@
 
     </section>
 
-    <!-- AI INSIGHTS -->
+    <!-- AI INSIGHTS (Static mock content hidden) -->
 
-    <section class="dashboard-grid recommendation-bottom-grid">
+    <section id="mockBottomGrid" class="dashboard-grid recommendation-bottom-grid" style="display: none;">
 
       <!-- LEFT -->
 

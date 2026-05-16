@@ -4,7 +4,7 @@ const {
 
 const chatWithAI = async (req, res) => {
   try {
-    const { message } = req.body;
+    const { message, context } = req.body;
 
     // Validate message
 
@@ -17,7 +17,7 @@ const chatWithAI = async (req, res) => {
 
     // Generate AI response
 
-    const aiResponse = await getFarmResponse(message);
+    const aiResponse = await getFarmResponse(message, context);
 
     // Send response
 
@@ -40,6 +40,27 @@ const chatWithAI = async (req, res) => {
   }
 };
 
+const getRecommendation = async (req, res) => {
+  try {
+    const payload = req.body;
+    const { generateFarmRecommendation } = require("../services/geminiService");
+
+    const recommendation = await generateFarmRecommendation(payload);
+
+    return res.status(200).json({
+      success: true,
+      recommendation
+    });
+  } catch (error) {
+    console.error("Recommendation Controller Error:", error.message);
+    return res.status(500).json({
+      success: false,
+      message: "Failed to generate recommendation"
+    });
+  }
+};
+
 module.exports = {
   chatWithAI,
+  getRecommendation
 };
