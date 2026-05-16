@@ -1,60 +1,27 @@
-const {
-  GoogleGenerativeAI,
-} = require("@google/generative-ai");
+const { GoogleGenerativeAI } = require("@google/generative-ai");
 
-const genAI = new GoogleGenerativeAI(
-  process.env.GEMINI_API_KEY
-);
+const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 
-async function generateChatResponse(
-  userMessage
-) {
-  try {
+// Farming AI brain instruction
+const model = genAI.getGenerativeModel({
+  model: "gemini-1.5-flash",
+  systemInstruction: `
+You are KrishiMitra AI, a farming expert assistant for Indian farmers.
 
-    // Use stable supported model
+Your job:
+- Suggest crops based on soil, weather, and location
+- Give irrigation and fertilizer advice
+- Help with pest and disease problems
+- Keep answers simple, practical, and short
+- Prefer Indian agriculture conditions
 
-    const model =
-      genAI.getGenerativeModel({
-        model: "models/gemini-2.0-flash",
-      });
+If data is missing, ask a short follow-up question.
+`
+});
 
-    const prompt = `
-You are KrishiMitra AI,
-a friendly Indian farming assistant.
-
-Rules:
-- Reply in the SAME language as the farmer.
-- Support Marathi, Hindi, and English.
-- Keep responses simple and practical.
-- Help farmers with agriculture guidance.
-- Avoid robotic or overly technical responses.
-- Keep answers concise but useful.
-
-Farmer Question:
-${userMessage}
-`;
-
-    const result =
-      await model.generateContent(prompt);
-
-    const response =
-      await result.response;
-
-    return response.text();
-
-  } catch (error) {
-
-    console.error(
-      "Gemini Error:",
-      error
-    );
-
-    throw new Error(
-      "AI response generation failed"
-    );
-  }
+async function getFarmResponse(userMessage) {
+  const result = await model.generateContent(userMessage);
+  return result.response.text();
 }
 
-module.exports = {
-  generateChatResponse,
-};
+module.exports = { getFarmResponse };
