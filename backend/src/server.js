@@ -14,7 +14,7 @@ app.use(cors());
 app.use(express.json());
 
 app.get("/", (req, res) => {
-  res.send("AgriGuard API Running");
+  res.send("KrishiMitra  API Running");
 });
 
 const testRoutes = require("./routes/testRoutes");
