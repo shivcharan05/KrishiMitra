@@ -32,10 +32,16 @@ const chatWithAI = async (req, res) => {
       error.message
     );
 
+    let clientMessage = "Failed to generate AI response";
+    
+    // Check for Gemini Rate Limit / Quota Errors
+    if (error.message.includes("429") || error.message.includes("Quota exceeded")) {
+      clientMessage = "AI Rate Limit Exceeded. The system is currently receiving too many requests. Please wait a minute and try again.";
+    }
+
     return res.status(500).json({
       success: false,
-      message:
-        "Failed to generate AI response",
+      message: clientMessage
     });
   }
 };
@@ -53,9 +59,15 @@ const getRecommendation = async (req, res) => {
     });
   } catch (error) {
     console.error("Recommendation Controller Error:", error.message);
+
+    let clientMessage = "Failed to generate recommendation";
+    if (error.message.includes("429") || error.message.includes("Quota exceeded")) {
+      clientMessage = "AI Rate Limit Exceeded. The system is currently receiving too many requests. Please wait a few seconds and try again.";
+    }
+
     return res.status(500).json({
       success: false,
-      message: "Failed to generate recommendation"
+      message: clientMessage
     });
   }
 };

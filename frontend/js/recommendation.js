@@ -5,7 +5,7 @@
 /* Shared state across modules (weather.js reads this too) */
 window.recommendationData = {
   location: {},
-  weather:  {},
+  weather: {},
   soilData: {},
 };
 
@@ -31,7 +31,7 @@ allowLocationBtn.addEventListener("click", async () => {
 
     async (position) => {
 
-      const latitude  = position.coords.latitude;
+      const latitude = position.coords.latitude;
       const longitude = position.coords.longitude;
 
       window.recommendationData.location = { latitude, longitude };
@@ -81,7 +81,7 @@ allowLocationBtn.addEventListener("click", async () => {
 ========================================= */
 
 document.addEventListener("DOMContentLoaded", () => {
-  
+
   /* ---- Soil Data Toggle Logic ---- */
   const radioBtns = document.querySelectorAll('input[name="hasSoilData"]');
   const manualInputs = document.getElementById("soilManualInputs");
@@ -105,10 +105,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
   /* ---- Generate AI Recommendation Button ---- */
   const generateBtn = document.getElementById("generateBtn");
-  
+
   if (generateBtn) {
     generateBtn.addEventListener("click", async () => {
-      
+
       /* Validate Location is fetched */
       if (!window.recommendationData.location.latitude) {
         alert("Please 'Allow Location' before generating a recommendation.");
@@ -129,15 +129,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
       /* Collect Soil Data Preference */
       const hasSoilData = document.querySelector('input[name="hasSoilData"]:checked').value === "yes";
-      
+
       let finalSoilData = null;
-      
+
       if (hasSoilData) {
         const ph = document.getElementById("soilPh").value;
         const n = document.getElementById("soilN").value;
         const p = document.getElementById("soilP").value;
         const k = document.getElementById("soilK").value;
-        
+
         if (!ph || !n || !p || !k) {
           alert("Please fill out all soil values (pH, N, P, K) or switch to AI auto-fetch.");
           return;
@@ -154,7 +154,7 @@ document.addEventListener("DOMContentLoaded", () => {
         // Fetch from Backend API
         generateBtn.innerHTML = "📡 Fetching Soil Intelligence...";
         generateBtn.disabled = true;
-        
+
         try {
           const lat = window.recommendationData.location.latitude;
           const lon = window.recommendationData.location.longitude;
@@ -162,7 +162,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
           const response = await fetch(`http://localhost:5000/api/soil?lat=${lat}&lon=${lon}&district=${district}`);
           if (!response.ok) throw new Error("Failed to fetch soil data");
-          
+
           finalSoilData = await response.json();
           console.log("Fetched Soil Data:", finalSoilData);
         } catch (error) {
@@ -213,54 +213,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
         const data = await response.json();
 
-        if (data.success && data.recommendation && Array.isArray(data.recommendation)) {
+        if (data.success && data.recommendation) {
           document.getElementById("aiRecommendationResult").style.display = "block";
-          const grid = document.getElementById("dynamicRecommendationGrid");
-          grid.innerHTML = ""; // Clear existing
-
-          data.recommendation.forEach((crop, index) => {
-            let recommendationLabel = "Recommended";
-            if (index === 0) recommendationLabel = "Highly Recommended";
-            if (index === 2) recommendationLabel = "Alternative Option";
-
-            const tagsHtml = crop.tags.map(tag => `<span>${tag}</span>`).join("");
-
-            const cardHtml = `
-              <div class="glass-card crop-recommendation-card" style="animation: fadeUp ${0.3 + (index * 0.2)}s ease forwards;">
-                <div class="crop-top">
-                  <div>
-                    <h3>${crop.cropName}</h3>
-                    <p class="text-soft">${recommendationLabel}</p>
-                  </div>
-                  <span class="recommendation-score">${crop.confidence}%</span>
-                </div>
-                
-                <p style="margin-top: 10px; font-size: 0.9rem; color: #ddd;">${crop.explanation}</p>
-
-                <div class="crop-metrics" style="margin-top: 15px;">
-                  <div class="metric">
-                    <span>💰 Expected Profit</span>
-                    <strong>${crop.expectedProfit}</strong>
-                  </div>
-                  <div class="metric">
-                    <span>⚠️ Risk Level</span>
-                    <strong>${crop.riskLevel}</strong>
-                  </div>
-                </div>
-
-                <div class="crop-tags" style="margin-top: 15px;">
-                  ${tagsHtml}
-                </div>
-              </div>
-            `;
-            grid.innerHTML += cardHtml;
-          });
-          
-          // Scroll to results smoothly
-          document.getElementById("aiRecommendationResult").scrollIntoView({ behavior: "smooth" });
-
+          document.getElementById("aiRecommendationContent").innerHTML = data.recommendation;
         } else {
-          alert("Error generating recommendation: Invalid format received.");
+          alert("Error generating recommendation: " + (data.message || "Unknown error"));
         }
       } catch (error) {
         console.error("AI Recommendation Error:", error);

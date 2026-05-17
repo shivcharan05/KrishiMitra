@@ -49,15 +49,17 @@ document.addEventListener("DOMContentLoaded", () => {
         }
       });
 
-      if (isValid) {
-        
+      if (!isValid) {
+        // If invalid, we can stop the propagation so other listeners don't run
+        e.stopImmediatePropagation();
+      } else if (form.id === "registerForm") {
         // Find the email input and save to localStorage
         const emailInput = form.querySelector('input[type="email"]');
         if (emailInput && emailInput.value) {
           localStorage.setItem('krishimitra_user_email', emailInput.value.trim());
         }
 
-        alert("Authentication Successful!");
+        alert("Registration Successful!");
         window.location.href = "dashboard.html";
       }
     });

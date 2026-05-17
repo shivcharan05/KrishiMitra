@@ -5,10 +5,7 @@
 
   <meta charset="UTF-8">
 
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0"
-  >
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <title>Login | KrishiMitra AI</title>
 
@@ -49,11 +46,7 @@
 
           </p>
 
-          <img
-            src="assets/images/auth-farming.png"
-            alt="AI Farming"
-            class="auth-image float-animation"
-          >
+          <img src="assets/images/auth-farming.png" alt="AI Farming" class="auth-image float-animation">
 
         </div>
 
@@ -87,13 +80,7 @@
 
               <label>Email Address</label>
 
-             <input
-  type="email"
-  id="email"
-  class="form-input"
-  placeholder="Enter your email"
-  required
->
+              <input type="email" id="email" class="form-input" placeholder="Enter your email" required>
 
             </div>
 
@@ -105,18 +92,10 @@
 
               <div class="input-wrapper">
 
-                <input
-  type="password"
-  id="password"
-  class="form-input password-input"
-  placeholder="Enter your password"
-  required
->
+                <input type="password" id="password" class="form-input password-input" placeholder="Enter your password"
+                  required>
 
-                <span
-                  class="password-toggle"
-                  onclick="togglePassword(this)"
-                >
+                <span class="password-toggle" onclick="togglePassword(this)">
                   👁️
                 </span>
 
@@ -162,13 +141,9 @@
 
             <div class="social-auth">
 
-             <button
-  type="button"
-  class="social-btn"
-  id="googleLoginBtn"
->
-  Google
-</button>
+              <button type="button" class="social-btn" id="googleLoginBtn">
+                Google
+              </button>
 
               <button type="button" class="social-btn">
                 Phone
@@ -184,10 +159,7 @@
 
             Don’t have an account?
 
-            <a
-              href="register.html"
-              class="auth-link"
-            >
+            <a href="register.html" class="auth-link">
               Register Here
             </a>
 
@@ -210,158 +182,164 @@
 
   <script type="module">
 
-  // Firebase Imports
-  import { initializeApp }
-  from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    // Firebase Imports
+    import { initializeApp }
+      from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 
-  import {
-    getAuth,
-    GoogleAuthProvider,
-    signInWithPopup,
-    signInWithEmailAndPassword
-  }
-  from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-
-  // Firebase Config
-  const firebaseConfig = {
- apiKey: "AIzaSyDNlIRNuaDA_UwQQ2TX9Cwm9KFrd6ifCsU",
-  authDomain: "krishimitra-927a9.firebaseapp.com",
-  projectId: "krishimitra-927a9",
-  storageBucket: "krishimitra-927a9.firebasestorage.app",
-  messagingSenderId: "502833231960",
-  appId: "1:502833231960:web:22c25f857616887150b22d"
-  };
-
-  // Initialize Firebase
-  const app = initializeApp(firebaseConfig);
-
-  const auth = getAuth(app);
-
-  const provider = new GoogleAuthProvider();
-
-  // ============================================
-  // GOOGLE LOGIN
-  // ============================================
-
-  const googleBtn =
-    document.getElementById("googleLoginBtn");
-
-  googleBtn.addEventListener("click", async () => {
-
-    try {
-
-      // Firebase Google Login
-      const result =
-        await signInWithPopup(auth, provider);
-
-      const user = result.user;
-
-      console.log("Google User:", user);
-
-      // Firebase Token
-      const token =
-        await user.getIdToken();
-
-      console.log("Firebase Token:", token);
-
-      // Send Token To Backend
-      const response = await fetch(
-        "http://localhost:5000/api/test/create-user",
-        {
-          method: "POST",
-
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-
-      const data = await response.json();
-
-      console.log("Backend Response:", data);
-
-      alert("Google Login Successful");
-
-      // Redirect
-      window.location.href = "dashboard.html";
-
-    } catch (error) {
-
-      console.log(error);
-
-      alert(error.message);
-
+    import {
+      getAuth,
+      GoogleAuthProvider,
+      signInWithPopup,
+      signInWithEmailAndPassword
     }
+      from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
-  });
+    // Firebase Config
+    const firebaseConfig = {
+      apiKey: "AIzaSyDNlIRNuaDA_UwQQ2TX9Cwm9KFrd6ifCsU",
+      authDomain: "krishimitra-927a9.firebaseapp.com",
+      projectId: "krishimitra-927a9",
+      storageBucket: "krishimitra-927a9.firebasestorage.app",
+      messagingSenderId: "502833231960",
+      appId: "1:502833231960:web:22c25f857616887150b22d"
+    };
 
-  // ============================================
-  // EMAIL PASSWORD LOGIN
-  // ============================================
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
 
-  const loginForm =
-    document.getElementById("loginForm");
+    const auth = getAuth(app);
 
-  loginForm.addEventListener("submit", async (e) => {
+    const provider = new GoogleAuthProvider();
 
-    e.preventDefault();
+    // ============================================
+    // GOOGLE LOGIN
+    // ============================================
 
-    try {
+    const googleBtn =
+      document.getElementById("googleLoginBtn");
 
-      const email =
-        document.getElementById("email").value;
+    googleBtn.addEventListener("click", async () => {
 
-      const password =
-        document.getElementById("password").value;
+      try {
 
-      // Firebase Email Login
-      const result =
-        await signInWithEmailAndPassword(
-          auth,
-          email,
-          password
+        // Firebase Google Login
+        const result =
+          await signInWithPopup(auth, provider);
+
+        const user = result.user;
+
+        console.log("Google User:", user);
+
+        // Firebase Token
+        const token =
+          await user.getIdToken();
+
+        console.log("Firebase Token:", token);
+
+        // Send Token To Backend
+        const response = await fetch(
+          "http://localhost:5000/api/test/create-user",
+          {
+            method: "POST",
+
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
         );
 
-      const user = result.user;
+        const data = await response.json();
 
-      console.log("Email User:", user);
+        console.log("Backend Response:", data);
 
-      // Firebase Token
-      const token =
-        await user.getIdToken();
+        alert("Google Login Successful");
 
-      // Send To Backend
-      const response = await fetch(
-        "http://localhost:5000/api/test/create-user",
-        {
-          method: "POST",
+        // Save email to localStorage so profile fetches correctly
+        localStorage.setItem('krishimitra_user_email', user.email);
 
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+        // Redirect
+        window.location.href = "dashboard.html";
 
-      const data = await response.json();
+      } catch (error) {
 
-      console.log(data);
+        console.log(error);
 
-      alert("Login Successful");
+        alert(error.message);
 
-      // Redirect
-      window.location.href = "dashboard.html";
+      }
 
-    } catch (error) {
+    });
 
-      console.log(error);
+    // ============================================
+    // EMAIL PASSWORD LOGIN
+    // ============================================
 
-      alert(error.message);
+    const loginForm =
+      document.getElementById("loginForm");
 
-    }
+    loginForm.addEventListener("submit", async (e) => {
 
-  });
+      e.preventDefault();
 
-</script>
+      try {
+
+        const email =
+          document.getElementById("email").value;
+
+        const password =
+          document.getElementById("password").value;
+
+        // Firebase Email Login
+        const result =
+          await signInWithEmailAndPassword(
+            auth,
+            email,
+            password
+          );
+
+        const user = result.user;
+
+        console.log("Email User:", user);
+
+        // Firebase Token
+        const token =
+          await user.getIdToken();
+
+        // Send To Backend
+        const response = await fetch(
+          "http://localhost:5000/api/test/create-user",
+          {
+            method: "POST",
+
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+
+        const data = await response.json();
+
+        console.log(data);
+
+        alert("Login Successful");
+
+        // Save email to localStorage so profile fetches correctly
+        localStorage.setItem('krishimitra_user_email', user.email);
+
+        // Redirect
+        window.location.href = "dashboard.html";
+
+      } catch (error) {
+
+        console.log(error);
+
+        alert(error.message);
+
+      }
+
+    });
+
+  </script>
 
 </body>
 

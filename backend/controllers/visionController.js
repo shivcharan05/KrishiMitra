@@ -25,9 +25,15 @@ const analyzeImage = async (req, res) => {
     });
   } catch (error) {
     console.error("Vision Controller Error:", error.message);
+
+    let clientMessage = "Failed to analyze image";
+    if (error.message.includes("429") || error.message.includes("Quota exceeded")) {
+      clientMessage = "AI Rate Limit Exceeded. The system is currently receiving too many requests. Please wait a few seconds and try again.";
+    }
+
     return res.status(500).json({
       success: false,
-      message: "Failed to analyze image"
+      message: clientMessage
     });
   }
 };

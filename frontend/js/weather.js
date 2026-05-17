@@ -5,7 +5,8 @@
    #weatherSection
 ========================================= */
 
-const recommendationData = window.recommendationData || {};
+window.recommendationData = window.recommendationData || {};
+const recommendationData = window.recommendationData;
 
 /* ---- Emoji icon map ---- */
 const weatherIconMap = {
@@ -61,6 +62,8 @@ const fetchWeatherData = async (latitude, longitude) => {
     /* Store in shared recommendation data object */
     if (window.recommendationData) {
       window.recommendationData.weather = data;
+      window.recommendationData.location = window.recommendationData.location || {};
+      window.recommendationData.location.city = data.location;
     }
 
     renderWeatherCard(data);
