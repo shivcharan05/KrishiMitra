@@ -49,8 +49,8 @@
 
       <div>
 
-        <h2>
-          Welcome Back, Farmer 👋
+        <h2 id="welcomeFarmerText">
+          Welcome Back,👋
         </h2>
 
         <p class="text-soft">
@@ -65,83 +65,13 @@
           🔔
         </button>
 
-        <img src="assets/images/farmer-avatar.png" alt="Farmer" class="profile-avatar">
+        <img src="assets/images/farmer-avatar.png" alt="Farmer" class="profile-avatar" id="dashboardProfileAvatar">
 
       </div>
 
     </header>
 
-    <!-- ANALYTICS -->
-
-    <section class="analytics-grid">
-
-      <div class="glass-card analytics-card ai-glow">
-
-        <div>
-
-          <p>Total Farm Health</p>
-
-          <h2 class="ai-number">92%</h2>
-
-        </div>
-
-        <span class="analytics-icon">
-          🌱
-        </span>
-
-      </div>
-
-      <div class="glass-card analytics-card">
-
-        <div>
-
-          <p>Rain Probability</p>
-
-          <h2 class="ai-number">78%</h2>
-
-        </div>
-
-        <span class="analytics-icon">
-          🌦️
-        </span>
-
-      </div>
-
-      <div class="glass-card analytics-card">
-
-        <div>
-
-          <p>Market Growth</p>
-
-          <h2 class="ai-number">+18%</h2>
-
-        </div>
-
-        <span class="analytics-icon">
-          📈
-        </span>
-
-      </div>
-
-      <div class="glass-card analytics-card">
-
-        <div>
-
-          <p>Active AI Agents</p>
-
-          <h2 class="ai-number">4</h2>
-
-        </div>
-
-        <span class="analytics-icon">
-          🤖
-        </span>
-
-      </div>
-
-    </section>
-
-    <!-- MAIN GRID -->
+    <!-- ANALYTICS REMOVED PER REQUEST -->
 
     <section class="dashboard-grid">
 
@@ -164,29 +94,9 @@
 
 
 
-          <!-- MARKET TRENDS -->
+          <!-- MARKET TRENDS REMOVED PER REQUEST -->
 
-          <div class="glass-card dashboard-widget">
-
-            <div class="widget-header">
-
-              <h3>Market Trends</h3>
-
-              <span>Weekly Analysis</span>
-
-            </div>
-
-            <canvas id="marketChart"></canvas>
-
-          </div>
-
-          <!-- RECOMMENDATIONS -->
-
-          <div class="recommendation-list" id="recommendationList">
-
-            <p>Loading recommendations...</p>
-
-          </div>
+          <!-- RECOMMENDATION LIST REMOVED PER REQUEST -->
           <!-- RIGHT COLUMN -->
 
           <div class="dashboard-right">
@@ -231,31 +141,11 @@
 
             <div class="alerts-list" id="alertsList">
 
-              <p>Loading alerts...</p>
+
 
             </div>
 
-            <!-- AI ASSISTANT -->
-
-            <div class="glass-card ai-assistant-widget pulse-glow">
-
-              <div class="assistant-icon">
-                🤖
-              </div>
-
-              <h3>AI Farming Assistant</h3>
-
-              <p>
-                Ask farming questions in simple language.
-              </p>
-
-              <button class="btn-primary">
-                Open Assistant
-              </button>
-
-            </div>
-
-          </div>
+            <!-- AI ASSISTANT REMOVED PER REQUEST -->
 
     </section>
 
@@ -271,23 +161,59 @@
   <script src="js/app.js"></script>
   <script src="./js/weather.js"></script>
   <script>
+    // Set Farmer Name and Avatar from API
+    const email = localStorage.getItem('krishimitra_user_email') || 'test@example.com';
+    fetch(`http://localhost:5000/api/users/profile/${email}`)
+      .then(res => res.json())
+      .then(user => {
+        if (user.name) {
+          document.getElementById('welcomeFarmerText').innerText = `Welcome Back, ${user.name} 👋`;
+        }
+        if (user.photoURL) {
+          document.getElementById('dashboardProfileAvatar').src = user.photoURL;
+        }
+      })
+      .catch(e => console.error("Error fetching user profile", e));
 
     navigator.geolocation.getCurrentPosition(
       async (position) => {
 
-        const latitude =
-          position.coords.latitude;
+        const latitude = position.coords.latitude;
+        const longitude = position.coords.longitude;
 
-        const longitude =
-          position.coords.longitude;
+        console.log("Location fetched:", latitude, longitude);
 
-        console.log(latitude);
-        console.log(longitude);
+        // Fetch Weather
+        await fetchWeatherData(latitude, longitude);
 
-        await fetchWeatherData(
-          latitude,
-          longitude
-        );
+        // Fetch Soil Data
+        try {
+          const district = window.recommendationData?.location?.city || "default";
+          const response = await fetch(`http://localhost:5000/api/soil?lat=${latitude}&lon=${longitude}&district=${district}`);
+
+          if (response.ok) {
+            const soilData = await response.json();
+            console.log("Dashboard Soil Data:", soilData);
+
+            // Assuming pH, Nitrogen, and a calculated health score
+            const ph = soilData.pH ? soilData.pH.toFixed(1) : '--';
+            const nitrogen = soilData.Nitrogen ? Math.round(soilData.Nitrogen) + ' mg/kg' : '--';
+
+            // Calculate a mock score based on ideal pH 6.5-7.5
+            let score = 85;
+            if (soilData.pH) {
+              const diff = Math.abs(soilData.pH - 7.0);
+              score = Math.max(50, 95 - (diff * 10));
+            }
+
+            document.getElementById('soilPH').innerText = ph;
+            document.getElementById('soilNitrogen').innerText = nitrogen;
+            document.getElementById('soilHealthScore').innerText = Math.round(score) + '%';
+            document.getElementById('soilMoisture').innerText = '45%'; // Mock moisture
+          }
+        } catch (error) {
+          console.error("Dashboard Soil Fetch Error:", error);
+        }
       }
     );
 

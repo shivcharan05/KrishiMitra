@@ -9,16 +9,16 @@ const recommendationData = window.recommendationData || {};
 
 /* ---- Emoji icon map ---- */
 const weatherIconMap = {
-  Clear:       { icon: "☀️",  label: "Clear Sky",     gradient: "linear-gradient(135deg,#f7971e,#ffd200)" },
-  Clouds:      { icon: "☁️",  label: "Cloudy",        gradient: "linear-gradient(135deg,#bdc3c7,#8e9eab)" },
-  Rain:        { icon: "🌧️", label: "Rainy",          gradient: "linear-gradient(135deg,#4FC3F7,#1976D2)" },
-  Drizzle:     { icon: "🌦️", label: "Drizzle",        gradient: "linear-gradient(135deg,#89f7fe,#66a6ff)" },
-  Thunderstorm:{ icon: "⛈️",  label: "Thunderstorm",  gradient: "linear-gradient(135deg,#373B44,#4286f4)" },
-  Snow:        { icon: "❄️",  label: "Snowy",         gradient: "linear-gradient(135deg,#E0EAFC,#CFDEF3)" },
-  Mist:        { icon: "🌫️", label: "Misty",          gradient: "linear-gradient(135deg,#c9d6ff,#e2e2e2)" },
-  Haze:        { icon: "🌁", label: "Hazy",            gradient: "linear-gradient(135deg,#c9d6ff,#e2e2e2)" },
-  Smoke:       { icon: "💨",  label: "Smoky",         gradient: "linear-gradient(135deg,#bdc3c7,#2c3e50)" },
-  Fog:         { icon: "🌫️", label: "Foggy",          gradient: "linear-gradient(135deg,#c9d6ff,#e2e2e2)" },
+  Clear: { icon: "☀️", label: "Clear Sky", gradient: "linear-gradient(135deg,#f7971e,#ffd200)" },
+  Clouds: { icon: "☁️", label: "Cloudy", gradient: "linear-gradient(135deg,#bdc3c7,#8e9eab)" },
+  Rain: { icon: "🌧️", label: "Rainy", gradient: "linear-gradient(135deg,#4FC3F7,#1976D2)" },
+  Drizzle: { icon: "🌦️", label: "Drizzle", gradient: "linear-gradient(135deg,#89f7fe,#66a6ff)" },
+  Thunderstorm: { icon: "⛈️", label: "Thunderstorm", gradient: "linear-gradient(135deg,#373B44,#4286f4)" },
+  Snow: { icon: "❄️", label: "Snowy", gradient: "linear-gradient(135deg,#E0EAFC,#CFDEF3)" },
+  Mist: { icon: "🌫️", label: "Misty", gradient: "linear-gradient(135deg,#c9d6ff,#e2e2e2)" },
+  Haze: { icon: "🌁", label: "Hazy", gradient: "linear-gradient(135deg,#c9d6ff,#e2e2e2)" },
+  Smoke: { icon: "💨", label: "Smoky", gradient: "linear-gradient(135deg,#bdc3c7,#2c3e50)" },
+  Fog: { icon: "🌫️", label: "Foggy", gradient: "linear-gradient(135deg,#c9d6ff,#e2e2e2)" },
 };
 
 /* ---- Skeleton while loading ---- */
@@ -82,11 +82,11 @@ const fetchWeatherData = async (latitude, longitude) => {
 /* ---- Render the beautiful weather card ---- */
 function renderWeatherCard(data) {
   const condition = data.weatherCondition || "Clear";
-  const info      = weatherIconMap[condition] || { icon: "🌤️", label: condition, gradient: "linear-gradient(135deg,#4CAF50,#2E7D32)" };
+  const info = weatherIconMap[condition] || { icon: "🌤️", label: condition, gradient: "linear-gradient(135deg,#4CAF50,#2E7D32)" };
 
-  const tempInt   = Math.round(data.temperature);
+  const tempInt = Math.round(data.temperature);
   const feelsLike = data.feelsLike ? Math.round(data.feelsLike) : "—";
-  const desc      = data.description
+  const desc = data.description
     ? data.description.charAt(0).toUpperCase() + data.description.slice(1)
     : info.label;
 
@@ -160,7 +160,7 @@ function renderWeatherCard(data) {
 
         <!-- Farming advisory strip -->
         <div class="weather-advisory">
-          <span class="advisory-icon">🌱</span>
+          <span class="advisory-icon"></span>
           <span class="advisory-text">${getFarmingAdvisory(data)}</span>
         </div>
 
@@ -187,22 +187,22 @@ function getCurrentTime() {
 
 function getSuitability(data) {
   const temp = data.temperature;
-  const hum  = data.humidity;
+  const hum = data.humidity;
 
   if (temp >= 20 && temp <= 35 && hum >= 40 && hum <= 80) {
-    return { cls: "suit-good",    text: "✅ Good for Farming" };
+    return { cls: "suit-good", text: "✅ Good for Farming" };
   } else if (temp > 38 || hum > 90) {
     return { cls: "suit-warning", text: "⚠️ Stress Conditions" };
   } else if (temp < 10) {
-    return { cls: "suit-bad",     text: "❄️ Cold Stress Risk" };
+    return { cls: "suit-bad", text: "❄️ Cold Stress Risk" };
   }
-  return { cls: "suit-moderate",  text: "🟡 Moderate Conditions" };
+  return { cls: "suit-moderate", text: "🟡 Moderate Conditions" };
 }
 
 function getFarmingAdvisory(data) {
   const cond = data.weatherCondition;
   const temp = data.temperature;
-  const hum  = data.humidity;
+  const hum = data.humidity;
 
   if (cond === "Rain" || cond === "Drizzle") {
     return "Rainfall detected — avoid pesticide spraying. Good conditions for transplanting seedlings.";
@@ -219,5 +219,5 @@ function getFarmingAdvisory(data) {
   if (cond === "Clear" && temp >= 22 && temp <= 34) {
     return "Ideal farming weather — great day for field operations, sowing, and irrigation management.";
   }
-  return "Check local forecast before scheduling field operations. Weather conditions are variable.";
+  return "";
 }

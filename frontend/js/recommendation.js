@@ -213,11 +213,54 @@ document.addEventListener("DOMContentLoaded", () => {
 
         const data = await response.json();
 
-        if (data.success && data.recommendation) {
+        if (data.success && data.recommendation && Array.isArray(data.recommendation)) {
           document.getElementById("aiRecommendationResult").style.display = "block";
-          document.getElementById("aiRecommendationContent").innerHTML = data.recommendation;
+          const grid = document.getElementById("dynamicRecommendationGrid");
+          grid.innerHTML = ""; // Clear existing
+
+          data.recommendation.forEach((crop, index) => {
+            let recommendationLabel = "Recommended";
+            if (index === 0) recommendationLabel = "Highly Recommended";
+            if (index === 2) recommendationLabel = "Alternative Option";
+
+            const tagsHtml = crop.tags.map(tag => `<span>${tag}</span>`).join("");
+
+            const cardHtml = `
+              <div class="glass-card crop-recommendation-card" style="animation: fadeUp ${0.3 + (index * 0.2)}s ease forwards;">
+                <div class="crop-top">
+                  <div>
+                    <h3>${crop.cropName}</h3>
+                    <p class="text-soft">${recommendationLabel}</p>
+                  </div>
+                  <span class="recommendation-score">${crop.confidence}%</span>
+                </div>
+                
+                <p style="margin-top: 10px; font-size: 0.9rem; color: #ddd;">${crop.explanation}</p>
+
+                <div class="crop-metrics" style="margin-top: 15px;">
+                  <div class="metric">
+                    <span>💰 Expected Profit</span>
+                    <strong>${crop.expectedProfit}</strong>
+                  </div>
+                  <div class="metric">
+                    <span>⚠️ Risk Level</span>
+                    <strong>${crop.riskLevel}</strong>
+                  </div>
+                </div>
+
+                <div class="crop-tags" style="margin-top: 15px;">
+                  ${tagsHtml}
+                </div>
+              </div>
+            `;
+            grid.innerHTML += cardHtml;
+          });
+          
+          // Scroll to results smoothly
+          document.getElementById("aiRecommendationResult").scrollIntoView({ behavior: "smooth" });
+
         } else {
-          alert("Error generating recommendation: " + (data.message || "Unknown error"));
+          alert("Error generating recommendation: Invalid format received.");
         }
       } catch (error) {
         console.error("AI Recommendation Error:", error);
