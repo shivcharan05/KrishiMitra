@@ -17,12 +17,14 @@ const chatbotRoutes = require("./routes/chatbotRoutes");
 const soilRoutes = require("./routes/soilRoutes");
 const userRoutes = require("./routes/userRoutes");
 const testRoutes = require("./routes/testRoutes");
+const schemeRoutes = require("./routes/schemeRoutes");
 
 app.use("/api/weather", weatherRoutes);
 app.use("/api/chatbot", chatbotRoutes);
 app.use("/api/soil", soilRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/test", testRoutes);
+app.use("/api/schemes", schemeRoutes);
 
 app.get("/", (req, res) => {
   res.send("KrishiMitra API Running");
