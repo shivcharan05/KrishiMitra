@@ -14,9 +14,7 @@ Your job:
 - Help with pest and disease problems
 - Keep answers simple, practical, and short
 - Prefer Indian agriculture conditions
-- CRITICAL: You must detect the language of the user's message. 
-  - If the user asks in English, your entire response MUST be in English.
-  - If the user asks in Hindi (either Devanagari or Romanized/Hinglish), your entire response MUST be in pure Hindi using the Devanagari script (e.g., नमस्ते).
+- CRITICAL: You MUST ALWAYS respond in English, regardless of the language the user uses.
 - If the user has provided location or weather data in the context, do NOT ask them for it again.
 
 If data is missing and not provided in the context, ask a short follow-up question.
@@ -34,11 +32,11 @@ async function getFarmResponse(userMessage, context = null) {
 
 async function generateFarmRecommendation(payload) {
   const langPref = payload.preferredLanguage === 'Hindi' ? 
-    "You MUST write the entire recommendation in pure Hindi using the Devanagari script (no Roman Hindi/Hinglish)." : 
-    "You MUST write the entire recommendation in English.";
+    "You MUST write the cropName, tags, and explanation in pure Hindi using the Devanagari script (no Roman Hindi/Hinglish)." : 
+    "You MUST write the cropName, tags, and explanation in English.";
 
   const prompt = `
-You are an expert agricultural AI. Generate a crop recommendation based on the following farm profile:
+You are an expert agricultural AI. Generate 3 crop recommendations based on the following farm profile:
 
 - Land Size: ${payload.farmArea} Acres
 - Soil Type: ${payload.soilType}
@@ -54,14 +52,83 @@ You are an expert agricultural AI. Generate a crop recommendation based on the f
 
 ${langPref}
 
-Format the output strictly as an HTML snippet (do not use markdown blocks like \`\`\`html) using <h3>, <ul>, <li>, and <p> tags so it can be directly injected into a webpage. Do NOT include <html> or <body> tags. Structure it nicely with the best recommended crop, profitability, risk level, and a brief explanation.
+Format the output strictly as a valid JSON array containing exactly 3 objects. Do NOT use markdown code blocks like \`\`\`json. The objects must follow this exact schema:
+[
+  {
+    "cropName": "Name of the crop",
+    "confidence": 92,
+    "expectedProfit": "₹45,000",
+    "riskLevel": "Low",
+    "tags": ["High Demand", "Low Water Need", "Gov Support"],
+    "explanation": "Brief reasoning for why this is recommended based on the soil and weather."
+  }
+]
   `;
 
   const result = await model.generateContent(prompt);
-  let html = result.response.text();
+  let jsonString = result.response.text();
   // Clean up any markdown blocks if the model still outputs them
-  html = html.replace(/```html/g, "").replace(/```/g, "").trim();
-  return html;
+  jsonString = jsonString.replace(/```json/gi, "").replace(/```/g, "").trim();
+  
+  try {
+    const parsed = JSON.parse(jsonString);
+    return parsed;
+  } catch (e) {
+    console.error("JSON parse error:", e.message);
+    throw new Error("Failed to generate valid JSON from AI");
+  }
 }
 
-module.exports = { getFarmResponse, generateFarmRecommendation };
+async function analyzeCropImage(base64Image, mimeType) {
+  const prompt = `
+You are an expert plant pathologist and agricultural AI. Analyze this crop image and provide a strict JSON response. Do NOT use markdown code blocks like \`\`\`json. The JSON must follow this schema exactly:
+{
+  "cropName": "Name of the crop (e.g., Tomato, Wheat)",
+  "cropStage": "Current growth stage (e.g., Vegetative, Flowering, Fruiting)",
+  "healthScore": 85,
+  "healthSummary": "Overall crop health is excellent with low disease probability.",
+  "detections": [
+    {
+      "name": "Healthy Leaf Structure",
+      "severity": "success-detection",
+      "description": "No visible fungal infection patterns.",
+      "icon": "✅"
+    }
+  ],
+  "actionableSuggestions": {
+    "fertilizer": "Use NPK 10-20-10 to boost flowering.",
+    "water": "Maintain moderate soil moisture. Water every 2 days.",
+    "immediateAction": "Monitor for whiteflies. No immediate chemical spray required."
+  }
+}
+
+- "cropName": Identify the crop. If unidentifiable, say "Unknown Crop".
+- "cropStage": Estimate the growth stage.
+- "healthScore": A number from 0 to 100 representing overall crop health.
+- "healthSummary": A 1-2 sentence summary of the image.
+- "detections": An array of up to 3 important findings.
+- "severity": Must be exactly one of "success-detection", "warning-detection", or "danger-detection".
+- "icon": A relevant emoji.
+- "actionableSuggestions": Provide practical advice for fertilizer, water, and immediate actions.
+  `;
+
+  const imagePart = {
+    inlineData: {
+      data: base64Image,
+      mimeType: mimeType
+    }
+  };
+
+  const result = await model.generateContent([prompt, imagePart]);
+  let jsonString = result.response.text();
+  jsonString = jsonString.replace(/```json/gi, "").replace(/```/g, "").trim();
+
+  try {
+    return JSON.parse(jsonString);
+  } catch (e) {
+    console.error("JSON parse error from Vision API:", e.message);
+    throw new Error("Failed to generate valid JSON from AI Vision");
+  }
+}
+
+module.exports = { getFarmResponse, generateFarmRecommendation, analyzeCropImage };
